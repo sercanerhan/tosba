@@ -1,0 +1,156 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { formatDate, formatNumber } from "../lib/listing-parser";
+import { mediaById } from "../data/media";
+import MediaFrame from "./MediaFrame.astro";
+import SourceTags from "./SourceTags.astro";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const before = mediaById["damage-contact-wide"]!;
+const after = mediaById["repair-after"]!;
+---
+
+<section class="transparency chapter chapter--large" id="seffaflik" aria-labelledby="transparency-title">
+  <div class="page-shell">
+    <div class="chapter__heading transparency__heading">
+      <p class="eyebrow eyebrow--warning">Şeffaflık dosyası</p>
+      <h2 id="transparency-title">Gizlemek yerine, bağlamını gösteriyorum.</h2>
+      <p>Hasar, boya ve onarım bilgileri; kesinlik düzeyleri ve mevcut kanıtlarıyla birlikte paylaşılır.</p>
+    </div>
+
+    <div class="transparency__summary">
+      <div>
+        <span class="technical">DEĞİŞEN</span>
+        <strong>{listing.condition.hoodStatus === "Değişen" ? "Kaput" : listing.condition.hoodStatus}</strong>
+      </div>
+      <div>
+        <span class="technical">LOKAL BOYA</span>
+        <strong>2 çamurluk</strong>
+        <small class="pending">Taraflar teyit bekliyor</small>
+      </div>
+      <div>
+        <span class="technical">TRAMER</span>
+        <strong class:list={{ pending: listing.condition.tramerStatus === "bilinmiyor" }}>{listing.condition.tramerStatus}</strong>
+      </div>
+      <div>
+        <span class="technical">EKSPERTİZ</span>
+        <strong>{listing.ad.openToInspection ? "Açık" : "Bilgi bekleniyor"}</strong>
+      </div>
+    </div>
+
+    <div class="transparency__compare" data-compare>
+      <div class="compare__media">
+        <MediaFrame asset={after} widths={[640, 960, 1280]} sizes="(max-width: 900px) 100vw, 68vw" />
+        <div class="compare__before" data-compare-before>
+          <MediaFrame asset={before} widths={[640, 960, 1280]} sizes="(max-width: 900px) 100vw, 68vw" />
+        </div>
+        <span class="compare__tag compare__tag--before technical">HASAR ANI</span>
+        <span class="compare__tag compare__tag--after technical">ONARIM SONRASI</span>
+      </div>
+      <label class="compare__control">
+        <span>Hasar anı ile onarım sonrasını karşılaştır</span>
+        <input type="range" min="0" max="100" value="52" data-compare-range />
+      </label>
+    </div>
+
+    <div class="damage-records">
+      {listing.damage.map((record, index) => (
+        <article class="damage-record" data-reveal-record>
+          <div class="damage-record__meta">
+            <span class="damage-record__number technical">{String(index + 1).padStart(2, "0")}</span>
+            <p class:list={["technical", { pending: !record.date }]}>{formatDate(record.date)}</p>
+          </div>
+          <div class="damage-record__body">
+            <h3>{record.title}</h3>
+            <p>{record.description}</p>
+            <dl>
+              <div><dt>Kilometre</dt><dd class:list={{ pending: !record.mileage }}>{formatNumber(record.mileage, " km")}</dd></div>
+              <div><dt>Değişen</dt><dd>{record.replaced || "Yok / bilgi bekleniyor"}</dd></div>
+              <div><dt>Boyanan</dt><dd class:list={{ pending: record.painted.includes("bekliyor") }}>{record.painted || "Yok / bilgi bekleniyor"}</dd></div>
+              <div><dt>Tramer</dt><dd class:list={{ pending: !record.tramer }}>{record.tramer || "Bilgi bekleniyor"}</dd></div>
+            </dl>
+            <SourceTags sources={record.sources} warning />
+          </div>
+          <div class="damage-record__evidence">
+            {record.photos.slice(0, 2).map((photoId) => {
+              const asset = mediaById[photoId];
+              return asset ? <MediaFrame asset={asset} showCaption widths={[360, 640, 840]} sizes="(max-width: 900px) 100vw, 32vw" /> : null;
+            })}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <aside class="transparency__note">
+      <Icon name="ph:info" aria-hidden="true" />
+      <div>
+        <strong>Kesinlik notu</strong>
+        <p>{listing.condition.radiatorStatus} Şasi, podye, direk ve airbag bilgileri güncel ekspertizle teyit edilmelidir.</p>
+      </div>
+      <SourceTags sources={listing.condition.sources} warning />
+    </aside>
+  </div>
+</section>
+
+<script src="../scripts/compare.ts"></script>
+
+<style>
+  .transparency { border-block: 1px solid var(--border-default); background: var(--surface-primary); }
+  .transparency__heading { grid-template-columns: minmax(0, 1fr) minmax(280px, .7fr); align-items: end; }
+  .transparency__heading .eyebrow,
+  .transparency__heading h2 { grid-column: 1; }
+  .transparency__heading > p:last-child { grid-column: 2; grid-row: 1 / span 2; }
+  .transparency__summary { display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: var(--space-12); border-top: 1px solid var(--border-default); border-left: 1px solid var(--border-default); }
+  .transparency__summary > div { min-height: 130px; display: grid; align-content: space-between; gap: var(--space-2); padding: var(--space-5); border-right: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); background: var(--surface-secondary); }
+  .transparency__summary span { color: var(--status-warning); font-size: var(--type-micro); }
+  .transparency__summary strong { font-size: var(--type-h3); font-weight: 520; text-transform: capitalize; }
+  .transparency__summary small { color: var(--text-tertiary); }
+  .transparency__compare { max-width: 1080px; margin: 0 auto var(--space-20); }
+  .compare__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-media); background: var(--surface-secondary); }
+  .compare__media > :global(.media-frame),
+  .compare__before,
+  .compare__before :global(.media-frame) { position: absolute; inset: 0; height: 100%; border-radius: 0; }
+  .compare__before { width: 52%; overflow: hidden; border-right: 1px solid var(--text-primary); }
+  .compare__before :global(.media-frame) { width: min(1080px, calc(100vw - (var(--page-pad) * 2))); max-width: none; }
+  .compare__tag { position: absolute; bottom: var(--space-4); padding: var(--space-2) var(--space-3); border: 1px solid var(--border-default); background: var(--overlay-scrim); font-size: var(--type-micro); }
+  .compare__tag--before { left: var(--space-4); color: var(--status-warning); }
+  .compare__tag--after { right: var(--space-4); color: var(--accent-soft); }
+  .compare__control { display: grid; gap: var(--space-3); margin-top: var(--space-4); color: var(--text-secondary); font-size: var(--type-body-sm); }
+  .compare__control input { width: 100%; accent-color: var(--accent-primary); cursor: ew-resize; }
+  .damage-records { border-top: 1px solid var(--border-default); }
+  .damage-record { display: grid; grid-template-columns: 120px minmax(260px, 1fr) minmax(320px, 1.15fr); gap: var(--space-10); padding-block: var(--space-16); border-bottom: 1px solid var(--border-default); }
+  .damage-record__meta { display: grid; align-content: start; gap: var(--space-4); color: var(--text-tertiary); font-size: var(--type-caption); }
+  .damage-record__number { color: var(--status-warning); font-size: var(--type-h3); }
+  .damage-record__body { display: grid; align-content: start; gap: var(--space-4); }
+  .damage-record__body h3 { font-size: var(--type-h3); font-weight: 540; }
+  .damage-record__body > p { color: var(--text-secondary); }
+  .damage-record__body dl { display: grid; gap: var(--space-2); margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--border-default); }
+  .damage-record__body dl div { display: grid; grid-template-columns: 100px 1fr; gap: var(--space-3); }
+  .damage-record__body dt,
+  .damage-record__body dd { margin: 0; font-size: var(--type-body-sm); }
+  .damage-record__body dt { color: var(--text-tertiary); }
+  .damage-record__body dd { color: var(--text-secondary); }
+  .damage-record__evidence { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .damage-record__evidence :global(.media-frame) { min-height: 300px; }
+  .transparency__note { display: flex; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-12); padding: var(--space-5); border: 1px solid var(--status-warning); background: var(--surface-secondary); }
+  .transparency__note > :global(svg) { flex: 0 0 auto; width: 1.25rem; height: 1.25rem; margin-top: var(--space-1); color: var(--status-warning); }
+  .transparency__note > div { flex: 1; }
+  .transparency__note p { margin-top: var(--space-1); color: var(--text-secondary); font-size: var(--type-body-sm); }
+  @media (max-width: 1000px) {
+    .damage-record { grid-template-columns: 88px 1fr; }
+    .damage-record__evidence { grid-column: 2; }
+  }
+  @media (max-width: 767px) {
+    .transparency__heading { grid-template-columns: 1fr; }
+    .transparency__heading > p:last-child { grid-column: 1; grid-row: auto; }
+    .transparency__summary { grid-template-columns: repeat(2, 1fr); }
+    .compare__media { aspect-ratio: 4 / 3; }
+    .damage-record { grid-template-columns: 1fr; gap: var(--space-6); padding-block: var(--space-12); }
+    .damage-record__meta { display: flex; justify-content: space-between; }
+    .damage-record__evidence { grid-column: 1; grid-template-columns: 1fr; }
+    .damage-record__evidence :global(.media-frame) { min-height: 280px; }
+    .transparency__note { flex-wrap: wrap; }
+  }
+</style>

@@ -1,0 +1,48 @@
+{
+  "name": "14-yillik-yorunge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run content:check && astro check && astro build && tsx scripts/prune-build-assets.ts",
+    "build:live": "PUBLICATION_MODE=live npm run build",
+    "preview": "astro preview",
+    "preview:dist": "tsx scripts/serve-dist.ts",
+    "check": "astro check",
+    "content:check": "tsx scripts/validate-content.ts",
+    "test": "vitest run tests/unit",
+    "test:watch": "vitest tests/unit",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
+    "audit": "tsx scripts/audit.ts"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "@fontsource-variable/geist": "^5.2.9",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@iconify-json/ph": "^1.2.2",
+    "astro": "^7.1.0",
+    "astro-icon": "^1.1.5",
+    "gsap": "^3.15.0",
+    "photoswipe": "^5.4.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@astrojs/compiler-binding-darwin-arm64": "^0.3.1",
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.57.0",
+    "@rolldown/binding-darwin-arm64": "^1.2.0",
+    "@types/node": "^24.10.0",
+    "lighthouse": "^13.0.1",
+    "playwright-lighthouse": "^4.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.15"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@8.15.4+sha512.0bd3a9be9eb0e9a692676deec00a303ba218ba279d99241475616b398dbaeedd11146f92c2843458f557b1d127e09d4c171e105bdcd6b61002b39685a8016b9e"
+}

@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Hero from "../components/Hero.astro";
+import OwnerStory from "../components/OwnerStory.astro";
+import TravelMap from "../components/TravelMap.astro";
+import VehicleAtlas from "../components/VehicleAtlas.astro";
+import VehiclePassport from "../components/VehiclePassport.astro";
+import ServiceTimeline from "../components/ServiceTimeline.astro";
+import Transparency from "../components/Transparency.astro";
+import Gallery from "../components/Gallery.astro";
+import FaqContact from "../components/FaqContact.astro";
+import { getImage } from "astro:assets";
+import { parseListing, getMissingLiveFields, getUnknownMediaReferences } from "../lib/listing-parser";
+import { mediaById } from "../data/media";
+import listingText from "../content/arac-bilgileri.txt?raw";
+
+const listing = parseListing(listingText);
+const missing = getMissingLiveFields(listing);
+const unknownMedia = getUnknownMediaReferences(listing, Object.keys(mediaById));
+const publicationMode = import.meta.env.PUBLICATION_MODE ?? "draft";
+
+if (unknownMedia.length > 0) {
+  throw new Error(`Medya manifestinde bulunmayan fotoğraf kimlikleri: ${unknownMedia.join(", ")}`);
+}
+
+if (publicationMode === "live" && missing.length > 0) {
+  throw new Error(`Canlı yayın için zorunlu alanlar eksik: ${missing.join(", ")}`);
+}
+
+const title = `${listing.car.modelYear} ${listing.car.make} ${listing.car.model} ${listing.car.engine} · İlk Sahibinden`;
+const description = `${listing.ownership.years} yıldır ilk sahibinde kullanılan ${listing.car.modelYear} ${listing.car.make} ${listing.car.model}. Teknik bilgiler, bakım geçmişi ve hasar şeffaflık kaydı.`;
+const heroImage = mediaById["hero-safe"]!.src;
+const socialImage = await getImage({ src: heroImage, width: 1200, height: 630, fit: "cover", format: "jpg", quality: 86 });
+const heroSrc = socialImage.src;
+const vehicle: Record<string, unknown> = {
+  "@type": "Vehicle",
+  name: listing.ad.title,
+  brand: { "@type": "Brand", name: listing.car.make },
+  model: listing.car.model,
+  vehicleModelDate: String(listing.car.modelYear),
+  vehicleConfiguration: `${listing.car.trim} · ${listing.car.engine} · ${listing.car.powerHp} HP`,
+  fuelType: listing.car.fuel,
+  vehicleTransmission: `${listing.car.gearCount} ileri ${listing.car.transmission}`,
+  color: listing.car.color,
+  numberOfDoors: listing.car.doorCount,
+  image: heroSrc,
+};
+
+if (listing.car.mileage) {
+  vehicle.mileageFromOdometer = { "@type": "QuantitativeValue", value: Number(listing.car.mileage), unitCode: "KMT" };
+}
+
+if (listing.ad.priceTl) {
+  vehicle.offers = {
+    "@type": "Offer",
+    priceCurrency: "TRY",
+    price: Number(listing.ad.priceTl),
+    availability: "https://schema.org/InStock",
+    itemCondition: "https://schema.org/UsedCondition",
+  };
+}
+
+const jsonLd = { "@context": "https://schema.org", ...vehicle };
+---
+
+<BaseLayout title={title} description={description} image={heroSrc} jsonLd={jsonLd}>
+  <SiteHeader />
+  <main id="ana-icerik">
+    <Hero listing={listing} />
+    <OwnerStory listing={listing} />
+    <TravelMap years={listing.ownership.years} />
+    <VehicleAtlas />
+    <VehiclePassport listing={listing} />
+    <ServiceTimeline listing={listing} />
+    <Transparency listing={listing} />
+    <Gallery />
+    <FaqContact listing={listing} />
+  </main>
+  <script src="../scripts/motion.ts"></script>
+</BaseLayout>

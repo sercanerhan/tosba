@@ -1,0 +1,149 @@
+# 14 Yıllık Yörünge — tek içerik kaynağı
+#
+# Değerleri iki noktanın sağında güncelleyin. Bilmediğiniz kritik bir alan için
+# "bilinmiyor" yazın; tahmin yürütmeyin. Tarihler YYYY-AA-GG, DOT kodları WWYY,
+# kilometre ve fiyat yalnız rakam olmalıdır.
+
+[ilan]
+baslik: 2012 Golf 1.4 TSI 122 HP Trendline Manuel
+fiyat_tl:
+pazarlik: Görüşülür
+sehir:
+ilce:
+whatsapp:
+guncel_fotograf_tarihi:
+muayene_son:
+anahtar_sayisi:
+satis_nedeni:
+ekspertize_acik: evet
+test_surusu: Randevu ile
+
+[arac]
+marka: Volkswagen
+model: Golf
+kasa: Mk6
+paket: Trendline
+model_yili: 2012
+ilk_tescil_yili: 2012
+motor: 1.4 TSI
+guc_hp: 122
+yakit: Benzin
+vites: Manuel
+vites_sayisi: 6
+kapi_sayisi: 5
+renk: Siyah
+kilometre:
+
+[sahiplik]
+ilk_sahibi: evet
+sahiplik_yili: 14
+kisa_hikaye: 14 yıldır kullandığım, sevdiğim ve nasıl kullanıldığını başından beri bildiğim yol arkadaşım.
+uyari_deneyimi: 14 yıllık kullanımım boyunca arıza veya uyarı ışığı yaşamadım.
+kullanim_aliskanligi: Motoru çalıştırdıktan sonra ve durdurmadan önce en az 30 saniye beklemeyi alışkanlık edindim.
+kaynak: satici_beyani
+
+[durum]
+boya_ozeti: İki çamurluk lokal boyalı; sağ ve sol taraf bilgisi teyit edilecek.
+hasar_ozeti: Kaput, yetkili servis ve sigorta süreci kapsamında değiştirildi.
+tramer_durumu: bilinmiyor
+tramer_tutari:
+kaput_durumu: Değişen
+radyator_durumu: Satıcı beyanına göre değişmedi; servis belgesiyle teyit bekleniyor.
+sasi_podye_direk: bilinmiyor
+airbag_durumu: bilinmiyor
+arka_bolge_guncel_durum: bilinmiyor
+kaynak: satici_beyani,fotograf
+
+[donanim]
+- Deri direksiyon simidi ve deri vites topuzu
+- Çok fonksiyonlu direksiyon
+- 6'lı CD çalar
+- Sis farları
+- Spor koltuklar
+- Çift renkli 16 inç alaşım jantlar
+- Araç tesliminde yetkili serviste takılan arka park sensörü
+
+[lastik:on-sol]
+konum: Ön sol
+marka:
+model:
+ebat:
+dot:
+dis_mm:
+takilma_tarihi:
+kaynak: satici_beyani
+
+[lastik:on-sag]
+konum: Ön sağ
+marka:
+model:
+ebat:
+dot:
+dis_mm:
+takilma_tarihi:
+kaynak: satici_beyani
+
+[lastik:arka-sol]
+konum: Arka sol
+marka:
+model:
+ebat:
+dot:
+dis_mm:
+takilma_tarihi:
+kaynak: satici_beyani
+
+[lastik:arka-sag]
+konum: Arka sağ
+marka:
+model:
+ebat:
+dot:
+dis_mm:
+takilma_tarihi:
+kaynak: satici_beyani
+
+[bakim:son-periyodik]
+tarih:
+kilometre:
+islem: Son periyodik bakım bilgisi eklenecek.
+servis:
+belge:
+kaynak: satici_beyani
+
+[hasar:kaput]
+baslik: Kaput değişimi
+tarih:
+kilometre:
+aciklama: Temas sonrasında kaput, yetkili servis ve sigorta süreci kapsamında değiştirildi. Olay ve onarım fotoğrafları aşağıda açıkça paylaşılmıştır.
+degisen: Kaput
+boyanan:
+tramer:
+fotograflar: damage-contact-wide,damage-contact-close,repair-prep,repair-after
+kaynak: satici_beyani,fotograf
+
+[hasar:camurluklar]
+baslik: Lokal boyalı çamurluklar
+tarih:
+kilometre:
+aciklama: İki çamurlukta lokal boya bulunmaktadır. Sağ ve sol taraf bilgisi canlı yayın öncesinde netleştirilecektir.
+degisen:
+boyanan: İki çamurluk; taraflar teyit bekliyor
+tramer:
+fotograflar: rear-area-mark
+kaynak: satici_beyani,fotograf
+
+[sss:ilk-sahip]
+soru: Araç kaçıncı sahibinden?
+cevap: Araç ilk sahibinden satılıktır ve 14 yıldır aynı kişi tarafından kullanılmaktadır.
+kaynak: satici_beyani
+
+[sss:hasar]
+soru: Değişen ve boyalı parçalar neler?
+cevap: Kaput değişmiştir. İki çamurluk lokal boyalıdır; taraf bilgisi teyit edilip bu dosyada güncellenecektir.
+kaynak: satici_beyani,fotograf
+
+[sss:ekspertiz]
+soru: Ekspertize açık mı?
+cevap: Evet. Görüşme ve ekspertiz randevusu WhatsApp üzerinden planlanabilir.
+kaynak: satici_beyani

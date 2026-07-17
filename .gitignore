@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.npm-cache/
+photos/
+test-results/
+playwright-report/
+artifacts/
+.DS_Store
+*.log
+*.md

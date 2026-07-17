@@ -1,0 +1,379 @@
+---
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { formatDate, formatNumber } from "../lib/listing-parser";
+import { mediaById } from "../data/media";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const hero = mediaById["hero-safe"]!;
+const texture = mediaById["atlas-texture"]!;
+const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", ") || "Konum bekleniyor";
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title" data-hero>
+  <div class="hero__media" aria-hidden="true" data-hero-media>
+    <Picture
+      src={hero.src}
+      formats={["avif"]}
+      fallbackFormat="webp"
+      widths={[480, 768, 1086]}
+      sizes="100vw"
+      quality={35}
+      alt=""
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="hero__ambient" aria-hidden="true">
+    <Picture
+      src={texture.src}
+      formats={["avif"]}
+      fallbackFormat="webp"
+      widths={[960, 1440, 1920]}
+      sizes="100vw"
+      alt=""
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+  <div class="hero__wash" aria-hidden="true"></div>
+
+  <div class="page-shell hero__content">
+    <div class="hero__copy" data-hero-copy>
+      <p class="hero__kicker technical">
+        <span aria-hidden="true"></span>
+        {listing.car.modelYear} · İlk sahibinden
+      </p>
+      <h1 id="hero-title">14 Yıllık<br />Yörünge</h1>
+      <p class="hero__model">
+        {listing.car.modelYear} {listing.car.model} {listing.car.engine}
+        <span aria-hidden="true">·</span>
+        {listing.car.powerHp} HP
+        <span aria-hidden="true">·</span>
+        {listing.car.transmission}
+      </p>
+      <p class="hero__ownership">İlk sahibi · {listing.ownership.years} yıllık yol arkadaşı</p>
+
+      <div class="hero__actions">
+        <a class="action action--primary" href="#arac-atlasi">
+          Aracı keşfet
+          <Icon name="ph:arrow-right" aria-hidden="true" />
+        </a>
+        <a class="action action--quiet" href="#seffaflik">
+          Şeffaflık kaydı
+          <Icon name="ph:file-text" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+
+    <dl class="hero__facts" aria-label="Hızlı satış bilgileri" data-hero-facts>
+      <div>
+        <dt>Kilometre</dt>
+        <dd class:list={{ pending: !listing.car.mileage }}>
+          {formatNumber(listing.car.mileage, " km")}
+        </dd>
+      </div>
+      <div>
+        <dt>Fiyat</dt>
+        <dd class:list={{ pending: !listing.ad.priceTl }}>
+          {formatNumber(listing.ad.priceTl, " TL")}
+        </dd>
+      </div>
+      <div>
+        <dt>Konum</dt>
+        <dd class:list={{ pending: !listing.ad.city }}>{location}</dd>
+      </div>
+    </dl>
+
+    <div class="hero__date technical" data-hero-date>
+      <span>{formatDate(listing.ad.currentPhotoDate)}</span>
+      <small><Icon name="ph:circle" aria-hidden="true" /> Güncel görünüm</small>
+    </div>
+
+    <a class="hero__scroll" href="#hikaye">
+      <span>Aşağı kaydır</span>
+      <Icon name="ph:arrow-down" aria-hidden="true" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--surface-void);
+  }
+
+  .hero__media,
+  .hero__ambient,
+  .hero__wash {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__media {
+    z-index: -4;
+  }
+
+  .hero__media :global(picture),
+  .hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__media :global(img) {
+    object-fit: cover;
+    object-position: 55% 64%;
+    transform: scale(1.02);
+  }
+
+  .hero__ambient {
+    z-index: -3;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .hero__ambient :global(picture),
+  .hero__ambient :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__ambient :global(img) {
+    object-fit: cover;
+  }
+
+  .hero__wash {
+    z-index: -2;
+    background: var(--overlay-soft);
+  }
+
+  .hero__wash::before {
+    position: absolute;
+    inset: -10% auto -10% -8%;
+    width: 62%;
+    background: var(--overlay-scrim);
+    filter: blur(28px);
+    content: "";
+  }
+
+  .hero__content {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: var(--space-32);
+    padding-bottom: var(--space-20);
+  }
+
+  .hero__copy {
+    width: min(56rem, 82vw);
+    padding-bottom: var(--space-16);
+  }
+
+  .hero__kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    color: var(--accent-soft);
+    font-size: var(--type-caption);
+  }
+
+  .hero__kicker span {
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--radius-circle);
+    background: var(--accent-primary);
+  }
+
+  h1 {
+    max-width: 9ch;
+    font-size: var(--type-display);
+    font-weight: 460;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  .hero__model {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-8);
+    font-size: var(--type-lead);
+    font-weight: 500;
+  }
+
+  .hero__ownership {
+    margin-top: var(--space-3);
+    color: var(--text-secondary);
+    font-size: var(--type-lead);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  .hero__facts {
+    position: absolute;
+    right: var(--page-pad);
+    bottom: var(--space-20);
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-4);
+    border: 1px solid var(--border-default);
+    background: var(--overlay-scrim);
+  }
+
+  .hero__facts div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .hero__facts dt,
+  .hero__facts dd {
+    margin: 0;
+  }
+
+  .hero__facts dt {
+    color: var(--text-tertiary);
+    font-family: var(--font-technical);
+    font-size: var(--type-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero__facts dd {
+    font-size: var(--type-body-sm);
+    font-weight: 520;
+  }
+
+  .hero__date {
+    position: absolute;
+    right: var(--page-pad);
+    top: calc(72px + var(--space-8));
+    display: grid;
+    gap: var(--space-1);
+    justify-items: end;
+    color: var(--text-secondary);
+    font-size: var(--type-caption);
+  }
+
+  .hero__date small {
+    color: var(--text-tertiary);
+  }
+
+  .hero__date :global(svg) {
+    color: var(--accent-primary);
+    font-size: var(--space-2);
+  }
+
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: var(--space-5);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-secondary);
+    font-size: var(--type-caption);
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 1023px) {
+    .hero__facts {
+      left: var(--page-pad);
+      right: var(--page-pad);
+      bottom: var(--space-3);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2);
+      padding: var(--space-3);
+    }
+
+    .hero__facts div {
+      padding-right: var(--space-2);
+      border-right: 1px solid var(--border-default);
+    }
+
+    .hero__facts div:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      align-items: stretch;
+    }
+
+    .hero__media :global(img) {
+      object-position: 62% 70%;
+    }
+
+    .hero__wash {
+      background: var(--overlay-scrim);
+      opacity: 0.68;
+    }
+
+    .hero__wash::before {
+      display: none;
+    }
+
+    .hero__content {
+      align-items: flex-end;
+      padding-bottom: 112px;
+    }
+
+    .hero__copy {
+      width: 100%;
+      padding-bottom: var(--space-10);
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 17vw, 5.25rem);
+    }
+
+    .hero__model {
+      max-width: 22rem;
+      font-size: var(--type-body);
+    }
+
+    .hero__ownership {
+      font-size: var(--type-body);
+    }
+
+    .hero__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .hero__date {
+      top: calc(64px + var(--space-4));
+    }
+
+    .hero__facts dd {
+      overflow: hidden;
+      font-size: var(--type-caption);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+  }
+</style>

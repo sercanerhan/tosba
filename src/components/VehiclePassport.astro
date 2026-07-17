@@ -1,0 +1,140 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { formatDate, formatNumber } from "../lib/listing-parser";
+import SourceTags from "./SourceTags.astro";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", ") || "Bilgi bekleniyor";
+const fact = (value: string, fallback = "Bilgi bekleniyor") => value || fallback;
+---
+
+<section class="passport chapter" id="arac-pasaportu" aria-labelledby="passport-title">
+  <div class="content-shell">
+    <div class="chapter__heading">
+      <p class="eyebrow">Araç pasaportu</p>
+      <h2 id="passport-title">Bir bakışta bütün kimliği.</h2>
+      <p>Satın alma kararında sorulan temel bilgiler ve dört lastiğin ayrı kayıtları.</p>
+    </div>
+
+    <div class="passport__grid">
+      <article class="passport__block passport__block--identity">
+        <p class="passport__label technical">01 · KİMLİK</p>
+        <h3>{listing.car.make} {listing.car.model} <span>{listing.car.generation}</span></h3>
+        <dl>
+          <div><dt>Model yılı</dt><dd>{listing.car.modelYear}</dd></div>
+          <div><dt>Paket</dt><dd>{listing.car.trim}</dd></div>
+          <div><dt>Motor</dt><dd>{listing.car.engine} · {listing.car.powerHp} HP</dd></div>
+          <div><dt>Vites</dt><dd>{listing.car.gearCount} ileri {listing.car.transmission}</dd></div>
+          <div><dt>Yakıt</dt><dd>{listing.car.fuel}</dd></div>
+          <div><dt>Renk</dt><dd>{listing.car.color}</dd></div>
+        </dl>
+      </article>
+
+      <article class="passport__block passport__block--ownership">
+        <p class="passport__label technical">02 · SAHİPLİK</p>
+        <h3>{listing.ownership.firstOwner ? "İlk sahibi" : "Sahiplik bilgisi"}<span>{listing.ownership.years} yıllık kullanım</span></h3>
+        <dl>
+          <div><dt>İlk tescil</dt><dd>{listing.car.firstRegistrationYear}</dd></div>
+          <div><dt>Kilometre</dt><dd class:list={{ pending: !listing.car.mileage }}>{formatNumber(listing.car.mileage, " km")}</dd></div>
+          <div><dt>Anahtar</dt><dd class:list={{ pending: !listing.ad.keyCount }}>{listing.ad.keyCount ? `${listing.ad.keyCount} adet` : "Bilgi bekleniyor"}</dd></div>
+          <div><dt>Muayene</dt><dd class:list={{ pending: !listing.ad.inspectionExpiry }}>{formatDate(listing.ad.inspectionExpiry)}</dd></div>
+        </dl>
+        <SourceTags sources={listing.ownership.sources} />
+      </article>
+
+      <article class="passport__block passport__block--sale">
+        <p class="passport__label technical">03 · SATIŞ</p>
+        <h3 class:list={{ pending: !listing.ad.priceTl }}>{formatNumber(listing.ad.priceTl, " TL")}<span>{listing.ad.negotiation}</span></h3>
+        <dl>
+          <div><dt>Konum</dt><dd class:list={{ pending: !listing.ad.city }}>{location}</dd></div>
+          <div><dt>Ekspertiz</dt><dd>{listing.ad.openToInspection ? "Açık" : "Bilgi bekleniyor"}</dd></div>
+          <div><dt>Test sürüşü</dt><dd>{fact(listing.ad.testDrive)}</dd></div>
+          <div><dt>Satış nedeni</dt><dd class:list={{ pending: !listing.ad.saleReason }}>{fact(listing.ad.saleReason)}</dd></div>
+        </dl>
+      </article>
+
+      <article class="passport__block passport__block--equipment">
+        <p class="passport__label technical">04 · FABRİKA / TESLİM DONANIMI</p>
+        <h3>Trendline’ın ötesinde<span>Almanya montajlı ekler + servis aksesuarı</span></h3>
+        <ul class="equipment-list">
+          {listing.equipment.map((item) => (
+            <li><Icon name="ph:check" aria-hidden="true" /><span>{item}</span></li>
+          ))}
+        </ul>
+        <p class="passport__note">Donanımlar satıcı beyanı ve mevcut fotoğrafla sunulur; teslim/fabrika ayrımı belge sağlandıkça güncellenir.</p>
+      </article>
+
+      <article class="passport__block passport__block--tires" id="lastikler">
+        <p class="passport__label technical">05 · DÖRT LASTİK KAYDI</p>
+        <h3>Her köşe ayrı.<span>DOT kodu: üretim haftası + yıl</span></h3>
+        <div class="tires-grid">
+          {listing.tires.map((tire) => (
+            <div class="tire-record">
+              <p>{tire.position}</p>
+              <strong class:list={{ pending: !tire.brand }}>{tire.brand || "Marka bekleniyor"}</strong>
+              <dl>
+                <div><dt>Model</dt><dd class:list={{ pending: !tire.model }}>{fact(tire.model)}</dd></div>
+                <div><dt>Ebat</dt><dd class:list={{ pending: !tire.size }}>{fact(tire.size)}</dd></div>
+                <div><dt>DOT</dt><dd class:list={{ pending: !tire.dot }}>{tire.dot || "WWYY bekleniyor"}</dd></div>
+                <div><dt>Diş</dt><dd class:list={{ pending: !tire.treadMm }}>{tire.treadMm ? `${tire.treadMm} mm` : "Ölçüm bekleniyor"}</dd></div>
+              </dl>
+            </div>
+          ))}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .passport { background: var(--surface-primary); }
+  .passport__grid { display: grid; grid-template-columns: repeat(12, 1fr); border-top: 1px solid var(--border-default); border-left: 1px solid var(--border-default); }
+  .passport__block { display: grid; align-content: start; gap: var(--space-6); padding: var(--space-8); border-right: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); background: var(--surface-secondary); }
+  .passport__block--identity,
+  .passport__block--ownership,
+  .passport__block--sale { grid-column: span 4; }
+  .passport__block--equipment { grid-column: span 7; }
+  .passport__block--tires { grid-column: span 5; }
+  .passport__label { color: var(--text-tertiary); font-size: var(--type-micro); letter-spacing: 0.08em; }
+  .passport__block h3 { display: grid; gap: var(--space-1); font-size: var(--type-h3); font-weight: 540; }
+  .passport__block h3 span { color: var(--text-secondary); font-size: var(--type-body-sm); font-weight: 400; }
+  .passport__block dl { display: grid; gap: var(--space-3); margin: 0; }
+  .passport__block dl div { display: flex; justify-content: space-between; gap: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-default); }
+  .passport__block dt,
+  .passport__block dd { margin: 0; font-size: var(--type-body-sm); }
+  .passport__block dt { color: var(--text-tertiary); }
+  .passport__block dd { text-align: right; }
+  .equipment-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-6); list-style: none; }
+  .equipment-list li { display: flex; gap: var(--space-3); align-items: flex-start; color: var(--text-secondary); }
+  .equipment-list :global(svg) { flex: 0 0 auto; width: 1rem; height: 1rem; margin-top: var(--space-1); color: var(--accent-soft); }
+  .passport__note { max-width: 68ch; color: var(--text-tertiary); font-size: var(--type-caption); }
+  .tires-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border-default); border-left: 1px solid var(--border-default); }
+  .tire-record { display: grid; gap: var(--space-2); padding: var(--space-4); border-right: 1px solid var(--border-default); border-bottom: 1px solid var(--border-default); }
+  .tire-record > p { color: var(--text-tertiary); font-family: var(--font-technical); font-size: var(--type-micro); text-transform: uppercase; }
+  .tire-record strong { font-size: var(--type-body-sm); font-weight: 540; }
+  .tire-record dl { gap: var(--space-1); }
+  .tire-record dl div { padding: 0; border: 0; }
+  .tire-record dt,
+  .tire-record dd { font-size: var(--type-caption); }
+  @media (max-width: 1023px) {
+    .passport__block--identity,
+    .passport__block--ownership,
+    .passport__block--sale { grid-column: span 6; }
+    .passport__block--sale { grid-column: span 12; }
+    .passport__block--equipment,
+    .passport__block--tires { grid-column: span 12; }
+  }
+  @media (max-width: 767px) {
+    .passport__grid { grid-template-columns: 1fr; }
+    .passport__block,
+    .passport__block--identity,
+    .passport__block--ownership,
+    .passport__block--sale,
+    .passport__block--equipment,
+    .passport__block--tires { grid-column: 1; padding: var(--space-5); }
+    .equipment-list,
+    .tires-grid { grid-template-columns: 1fr; }
+  }
+</style>

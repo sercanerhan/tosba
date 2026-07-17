@@ -1,0 +1,117 @@
+---
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { mediaById } from "../data/media";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const footer = mediaById["orbital-horizon"]!;
+const topics = ["Genel bilgi", "Hasar kaydı", "Lastikler", "Görüşme talebi"];
+---
+
+<section class="faq chapter" id="sss" aria-labelledby="faq-title">
+  <div class="content-shell faq__grid">
+    <div class="chapter__heading">
+      <p class="eyebrow">Sık sorulanlar</p>
+      <h2 id="faq-title">Aklınızdaki sorular, açık cevaplar.</h2>
+    </div>
+    <div class="faq__list">
+      {listing.faq.map((item, index) => (
+        <details open={index === 0}>
+          <summary>
+            <span>{item.question}</span>
+            <Icon name="ph:plus" aria-hidden="true" />
+          </summary>
+          <div><p>{item.answer}</p><small class="technical">KAYNAK · {item.sources.includes("fotograf") ? "SATICI BEYANI + FOTOĞRAF" : "SATICI BEYANI"}</small></div>
+        </details>
+      ))}
+      <details>
+        <summary><span>Eksik bilgiler neden boş görünüyor?</span><Icon name="ph:plus" aria-hidden="true" /></summary>
+        <div><p>Fiyat, güncel kilometre, DOT ve servis tarihi gibi alanlar teyit edilmeden yayınlanmıyor. Bilgi dosyası güncellendiğinde sayfa otomatik tamamlanır.</p><small class="technical">ŞEFFAFLIK İLKESİ</small></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer class="contact-footer" id="iletisim" data-contact data-whatsapp={listing.ad.whatsapp}>
+  <div class="contact-footer__visual" aria-hidden="true">
+    <Picture src={footer.src} formats={["avif"]} fallbackFormat="webp" widths={[768, 1280, 1920]} sizes="100vw" alt="" loading="lazy" decoding="async" />
+  </div>
+  <div class="contact-footer__wash" aria-hidden="true"></div>
+  <div class="page-shell contact-footer__inner">
+    <p class="eyebrow">Yeni bir yörünge</p>
+    <h2>14 yıl sonra,<br />sıra yeni sahibinde.</h2>
+    <p>Merak ettiğiniz konuyu seçin; WhatsApp mesajı sizin için hazırlansın.</p>
+    <div class="contact-footer__topics" role="group" aria-label="İletişim konusu">
+      {topics.map((topic, index) => (
+        <button type="button" aria-pressed={index === 0 ? "true" : "false"} data-contact-topic={topic}>{topic}</button>
+      ))}
+    </div>
+    <button class="action action--primary contact-footer__action" type="button" data-whatsapp-action>
+      <Icon name="ph:whatsapp-logo" aria-hidden="true" />
+      WhatsApp'tan konuşalım
+    </button>
+    <p class="contact-footer__status" data-contact-status>{listing.ad.whatsapp ? "Seçtiğiniz konu mesajda otomatik yazılacak." : "WhatsApp numarası bilgi dosyasına eklendiğinde bağlantı aktif olacak."}</p>
+    <div class="contact-footer__meta technical">
+      <span>{listing.car.modelYear} · {listing.car.make} {listing.car.model}</span>
+      <span>Plaka gizli · Analitik yok · Aracı backend yok</span>
+    </div>
+  </div>
+
+  <dialog class="contact-dialog" aria-labelledby="contact-dialog-title" data-contact-dialog>
+    <div>
+      <button type="button" aria-label="Pencereyi kapat" data-contact-close><Icon name="ph:x" aria-hidden="true" /></button>
+      <Icon name="ph:file-text" class="contact-dialog__icon" aria-hidden="true" />
+      <h3 id="contact-dialog-title">Bir bilgi daha gerekiyor.</h3>
+      <p>WhatsApp numarası henüz eklenmedi. <code>src/content/arac-bilgileri.txt</code> içindeki <code>whatsapp:</code> alanına ülke koduyla yazıldığında bu eylem otomatik çalışacak.</p>
+    </div>
+  </dialog>
+</footer>
+
+<script src="../scripts/contact.ts"></script>
+
+<style>
+  .faq { border-top: 1px solid var(--border-default); background: var(--surface-primary); }
+  .faq__grid { display: grid; grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr); gap: var(--space-20); }
+  .faq__list { border-top: 1px solid var(--border-default); }
+  details { border-bottom: 1px solid var(--border-default); }
+  summary { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); cursor: pointer; list-style: none; font-size: var(--type-lead); }
+  summary::-webkit-details-marker { display: none; }
+  summary :global(svg) { flex: 0 0 auto; width: 1rem; height: 1rem; transition: transform 240ms var(--ease-standard); }
+  details[open] summary :global(svg) { transform: rotate(45deg); }
+  details > div { display: grid; gap: var(--space-4); padding: 0 var(--space-12) var(--space-6) 0; }
+  details p { color: var(--text-secondary); }
+  details small { color: var(--text-tertiary); font-size: var(--type-micro); }
+  .contact-footer { position: relative; min-height: 88dvh; display: grid; align-items: center; overflow: hidden; isolation: isolate; border-top: 1px solid var(--border-default); background: var(--surface-void); }
+  .contact-footer__visual,
+  .contact-footer__wash { position: absolute; inset: 0; }
+  .contact-footer__visual { z-index: -2; opacity: .62; }
+  .contact-footer__visual :global(picture),
+  .contact-footer__visual :global(img) { width: 100%; height: 100%; }
+  .contact-footer__visual :global(img) { object-fit: cover; object-position: center bottom; }
+  .contact-footer__wash { z-index: -1; background: var(--overlay-soft); }
+  .contact-footer__inner { display: grid; justify-items: center; gap: var(--space-6); padding-block: var(--space-24); text-align: center; }
+  .contact-footer h2 { max-width: 12ch; font-size: var(--type-h1); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
+  .contact-footer__inner > p:not(.eyebrow, .contact-footer__status) { max-width: 52ch; color: var(--text-secondary); font-size: var(--type-lead); }
+  .contact-footer__topics { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+  .contact-footer__topics button { min-height: 44px; padding: var(--space-2) var(--space-4); border: 1px solid var(--border-strong); border-radius: var(--radius-control); background: var(--overlay-scrim); color: var(--text-secondary); cursor: pointer; }
+  .contact-footer__topics button[aria-pressed="true"] { border-color: var(--accent-primary); color: var(--text-primary); }
+  .contact-footer__action { min-width: min(100%, 320px); }
+  .contact-footer__status { color: var(--text-tertiary); font-size: var(--type-caption); }
+  .contact-footer__meta { position: absolute; inset: auto var(--page-pad) var(--space-6); display: flex; justify-content: space-between; gap: var(--space-4); color: var(--text-tertiary); font-size: var(--type-micro); }
+  .contact-dialog > div { position: relative; display: grid; justify-items: center; gap: var(--space-4); padding: var(--space-10); text-align: center; }
+  .contact-dialog [data-contact-close] { position: absolute; right: var(--space-3); top: var(--space-3); width: 44px; height: 44px; border-radius: var(--radius-circle); background: var(--surface-secondary); cursor: pointer; }
+  .contact-dialog__icon { color: var(--status-warning); font-size: 2rem; }
+  .contact-dialog h3 { font-size: var(--type-h3); }
+  .contact-dialog p { color: var(--text-secondary); }
+  .contact-dialog code { color: var(--accent-soft); font-family: var(--font-technical); }
+  @media (max-width: 767px) {
+    .faq__grid { grid-template-columns: 1fr; gap: var(--space-4); }
+    summary { font-size: var(--type-body); }
+    .contact-footer { min-height: 100dvh; }
+    .contact-footer__topics { width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); }
+    .contact-footer__action { width: 100%; }
+    .contact-footer__meta { position: static; flex-direction: column; align-items: center; margin-top: var(--space-8); }
+  }
+</style>

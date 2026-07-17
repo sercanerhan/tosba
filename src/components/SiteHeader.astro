@@ -1,0 +1,167 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header__progress" aria-hidden="true"><span data-scroll-progress></span></div>
+  <div class="page-shell site-header__inner">
+    <a class="brand" href="#top">
+      <strong>14</strong>
+      <span>Yıllık<br />Yörünge</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Ana menü">
+      <a href="#hikaye">Hikâye</a>
+      <a href="#yolculuk">Yolculuk</a>
+      <a href="#arac-atlasi">Araç atlası</a>
+      <a href="#bakim">Bakım</a>
+      <a href="#seffaflik">Şeffaflık</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+      <span>Menü</span>
+      <Icon name="ph:list" aria-hidden="true" />
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+    <nav aria-label="Mobil menü">
+      <a href="#hikaye">Hikâye</a>
+      <a href="#yolculuk">Yolculuk</a>
+      <a href="#arac-atlasi">Araç atlası</a>
+      <a href="#bakim">Bakım</a>
+      <a href="#seffaflik">Şeffaflık</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </div>
+</header>
+
+<script src="../scripts/navigation.ts"></script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    border-bottom: 1px solid transparent;
+    background: var(--overlay-header);
+    transition:
+      background-color 240ms ease-in-out,
+      border-color 240ms ease-in-out;
+  }
+
+  .site-header[data-scrolled="true"] {
+    border-color: var(--border-default);
+    background: var(--overlay-scrim);
+    backdrop-filter: blur(16px);
+  }
+
+  .site-header__progress {
+    height: 2px;
+    background: var(--border-default);
+    overflow: hidden;
+  }
+
+  .site-header__progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .site-header__inner {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--type-caption);
+    font-weight: 560;
+    line-height: 1.05;
+  }
+
+  .brand strong {
+    color: var(--accent-primary);
+    font-size: 2rem;
+    font-weight: 620;
+    letter-spacing: -0.06em;
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    color: var(--text-secondary);
+    font-size: var(--type-body-sm);
+  }
+
+  .desktop-nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 240ms ease-in-out,
+      border-color 240ms ease-in-out;
+  }
+
+  .desktop-nav a:hover,
+  .desktop-nav a:focus-visible,
+  .desktop-nav a[aria-current="true"] {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+  }
+
+  .menu-toggle {
+    min-height: 44px;
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    background: var(--surface-secondary);
+    cursor: pointer;
+  }
+
+  .mobile-menu {
+    border-top: 1px solid var(--border-default);
+    background: var(--surface-primary);
+  }
+
+  .mobile-menu nav {
+    display: grid;
+    padding: var(--space-4) var(--page-pad) var(--space-8);
+  }
+
+  .mobile-menu a {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-default);
+    font-size: var(--type-h3);
+  }
+
+  @media (max-width: 767px) {
+    .site-header__inner {
+      min-height: 64px;
+    }
+
+    .desktop-nav {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+    }
+  }
+</style>

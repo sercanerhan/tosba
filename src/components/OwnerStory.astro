@@ -1,0 +1,131 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { mediaById } from "../data/media";
+import MediaFrame from "./MediaFrame.astro";
+import SourceTags from "./SourceTags.astro";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const storyImage = mediaById["lifestyle-side"]!;
+---
+
+<section class="owner-story chapter chapter--large" id="hikaye" aria-labelledby="story-title" data-story>
+  <div class="content-shell owner-story__grid">
+    <div class="owner-story__copy">
+      <p class="eyebrow">Sahibinin notu</p>
+      <h2 id="story-title">14 yıl,<br />tek hikâye.</h2>
+      <p class="owner-story__lead" data-story-words>
+        Bu bir vitrinden çok, birlikte geçen yılların kaydı. İlk günden bugüne nasıl kullanıldığını bildiğim bu Golf, şimdi yeni sahibini arıyor.
+      </p>
+      <p>{listing.ownership.shortStory}</p>
+      <blockquote>
+        “{listing.ownership.warningExperience}”
+      </blockquote>
+      <p class="owner-story__habit">
+        <Icon name="ph:engine" aria-hidden="true" />
+        <span>{listing.ownership.usageHabit}</span>
+      </p>
+      <SourceTags sources={listing.ownership.sources} />
+    </div>
+
+    <div class="owner-story__visual" data-reveal-media>
+      <MediaFrame asset={storyImage} showCaption widths={[480, 768]} sizes="(max-width: 768px) 100vw, 35vw" />
+      <p class="owner-story__caption technical">2012 → 2026 · Aynı sahibin yörüngesinde</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .owner-story {
+    border-top: 1px solid var(--border-default);
+    background: var(--surface-primary);
+  }
+
+  .owner-story__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(280px, 4fr);
+    gap: var(--space-20);
+    align-items: center;
+  }
+
+  .owner-story__copy {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  h2 {
+    font-size: var(--type-h1);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .owner-story__lead {
+    max-width: 56ch;
+    color: var(--text-primary);
+    font-size: var(--type-lead);
+  }
+
+  .owner-story__copy > p:not(.eyebrow, .owner-story__lead, .owner-story__habit) {
+    max-width: 56ch;
+    color: var(--text-secondary);
+  }
+
+  blockquote {
+    max-width: 52ch;
+    margin: var(--space-2) 0;
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--accent-primary);
+    color: var(--text-secondary);
+    font-size: var(--type-lead);
+  }
+
+  .owner-story__habit {
+    max-width: 58ch;
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    padding: var(--space-4);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+  }
+
+  .owner-story__habit :global(svg) {
+    flex: 0 0 auto;
+    margin-top: var(--space-1);
+    color: var(--accent-soft);
+    font-size: 1.25rem;
+  }
+
+  .owner-story__visual {
+    position: relative;
+  }
+
+  .owner-story__visual :global(.media-frame) {
+    aspect-ratio: 3 / 4;
+  }
+
+  .owner-story__caption {
+    width: fit-content;
+    margin: var(--space-3) 0 0 auto;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--border-default);
+    background: var(--surface-secondary);
+    color: var(--text-tertiary);
+    font-size: var(--type-caption);
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    .owner-story__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+    }
+
+    .owner-story__visual {
+      width: min(100%, 540px);
+      margin-inline: auto;
+    }
+  }
+</style>

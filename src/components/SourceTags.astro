@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+import type { EvidenceSource } from "../lib/listing-schema";
+
+type Props = {
+  sources: EvidenceSource[];
+  awaiting?: boolean;
+  warning?: boolean;
+};
+
+const { sources, awaiting = false, warning = false } = Astro.props;
+const labels: Record<EvidenceSource, { label: string; icon: string }> = {
+  satici_beyani: { label: "Satıcı beyanı", icon: "ph:user-circle" },
+  fotograf: { label: "Fotoğraf", icon: "ph:camera" },
+  servis_belgesi: { label: "Servis belgesi", icon: "ph:file-text" },
+};
+---
+
+<ul class="source-tags" aria-label="Bilgi kaynakları">
+  {sources.map((source) => (
+    <li class:list={["source-tag", { "source-tag--warning": warning }]}>
+      <Icon name={labels[source].icon} aria-hidden="true" />
+      {labels[source].label}
+    </li>
+  ))}
+  {awaiting && (
+    <li class="source-tag source-tag--warning">
+      <Icon name="ph:clock" aria-hidden="true" />
+      Teyit bekliyor
+    </li>
+  )}
+</ul>

@@ -1,0 +1,97 @@
+---
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import { formatDate, formatNumber } from "../lib/listing-parser";
+import SourceTags from "./SourceTags.astro";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+---
+
+<section class="timeline chapter chapter--large" id="bakim" aria-labelledby="timeline-title" data-timeline>
+  <div class="content-shell">
+    <div class="chapter__heading timeline__heading">
+      <p class="eyebrow">Bakım yörüngesi</p>
+      <h2 id="timeline-title">Tarih, kilometre, işlem, kanıt.</h2>
+      <p>Yeni kayıtlar bilgi dosyasına eklendikçe bu yörünge otomatik uzar. Boşluklar iddiayla doldurulmaz.</p>
+    </div>
+
+    <div class="timeline__track">
+      <div class="timeline__rail" aria-hidden="true"><span data-timeline-progress></span></div>
+
+      <article class="timeline__event" data-timeline-event>
+        <div class="timeline__node" aria-hidden="true"></div>
+        <div class="timeline__date technical">{listing.car.firstRegistrationYear}</div>
+        <div class="timeline__body">
+          <p class="timeline__type">Başlangıç</p>
+          <h3>İlk tescil · ilk sahibi</h3>
+          <p>Aracın {listing.ownership.years} yıllık tek sahipli kullanım hikâyesi burada başladı.</p>
+          <SourceTags sources={listing.ownership.sources} />
+        </div>
+      </article>
+
+      {listing.maintenance.map((event) => (
+        <article class="timeline__event" data-timeline-event>
+          <div class="timeline__node" aria-hidden="true"></div>
+          <div class:list={["timeline__date", "technical", { pending: !event.date }]}>{formatDate(event.date)}</div>
+          <div class="timeline__body">
+            <p class="timeline__type">Bakım kaydı</p>
+            <h3>{event.operation}</h3>
+            <dl>
+              <div><dt>Kilometre</dt><dd class:list={{ pending: !event.mileage }}>{formatNumber(event.mileage, " km")}</dd></div>
+              <div><dt>Servis</dt><dd class:list={{ pending: !event.service }}>{event.service || "Bilgi bekleniyor"}</dd></div>
+              <div><dt>Belge</dt><dd class:list={{ pending: !event.document }}>{event.document || "Belge bekleniyor"}</dd></div>
+            </dl>
+            <SourceTags sources={event.sources} />
+          </div>
+        </article>
+      ))}
+
+      <article class="timeline__event timeline__event--now" data-timeline-event>
+        <div class="timeline__node" aria-hidden="true"></div>
+        <div class="timeline__date technical">ŞİMDİ</div>
+        <div class="timeline__body">
+          <p class="timeline__type">Satış hazırlığı</p>
+          <h3>Ekspertize açık</h3>
+          <p>Güncel kilometre, bakım tarihi ve servis belgeleri eklendiğinde bu bölüm canlı yayına hazır olacak.</p>
+          <a class="action action--quiet" href="#iletisim">Görüşme talebi <Icon name="ph:arrow-right" aria-hidden="true" /></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline { background: var(--surface-void); }
+  .timeline__heading { grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr); align-items: end; }
+  .timeline__heading .eyebrow,
+  .timeline__heading h2 { grid-column: 1; }
+  .timeline__heading > p:last-child { grid-column: 2; grid-row: 1 / span 2; }
+  .timeline__track { position: relative; max-width: 980px; margin-inline: auto; }
+  .timeline__rail { position: absolute; left: 184px; top: 0; bottom: 0; width: 1px; background: var(--border-default); }
+  .timeline__rail span { display: block; width: 100%; height: 100%; background: var(--accent-primary); transform: scaleY(0); transform-origin: top center; }
+  .timeline__event { position: relative; display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--space-16); min-height: 220px; padding-bottom: var(--space-16); }
+  .timeline__node { position: absolute; left: 178px; top: 5px; width: 13px; height: 13px; border: 3px solid var(--surface-void); border-radius: var(--radius-circle); background: var(--text-tertiary); transform: translateX(-1px); }
+  .timeline__event--now .timeline__node { background: var(--accent-primary); }
+  .timeline__date { color: var(--text-tertiary); font-size: var(--type-caption); text-align: right; }
+  .timeline__body { display: grid; gap: var(--space-4); max-width: 650px; }
+  .timeline__type { color: var(--accent-soft); font-family: var(--font-technical); font-size: var(--type-micro); letter-spacing: 0.08em; text-transform: uppercase; }
+  .timeline__body h3 { font-size: var(--type-h3); font-weight: 540; }
+  .timeline__body > p:not(.timeline__type) { color: var(--text-secondary); }
+  .timeline__body dl { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-4); border: 1px solid var(--border-default); background: var(--surface-primary); }
+  .timeline__body dl div { display: grid; grid-template-columns: 120px 1fr; gap: var(--space-4); }
+  .timeline__body dt,
+  .timeline__body dd { margin: 0; font-size: var(--type-body-sm); }
+  .timeline__body dt { color: var(--text-tertiary); }
+  .timeline__body dd { color: var(--text-secondary); }
+  .timeline__body .action { justify-self: start; }
+  @media (max-width: 767px) {
+    .timeline__heading { grid-template-columns: 1fr; }
+    .timeline__heading > p:last-child { grid-column: 1; grid-row: auto; }
+    .timeline__rail { left: 6px; }
+    .timeline__event { grid-template-columns: 1fr; gap: var(--space-3); min-height: 0; padding: 0 0 var(--space-16) var(--space-8); }
+    .timeline__node { left: 0; top: 5px; }
+    .timeline__date { text-align: left; }
+    .timeline__body dl div { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
