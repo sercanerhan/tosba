@@ -46,6 +46,9 @@ devDependencies:
   '@types/node':
     specifier: ^24.10.0
     version: 24.13.3
+  chrome-launcher:
+    specifier: ^1.2.1
+    version: 1.2.1
   lighthouse:
     specifier: ^13.0.1
     version: 13.4.0
