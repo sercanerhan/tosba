@@ -2,19 +2,19 @@ import type { ImageMetadata } from "astro";
 import heroSafe from "../assets/generated/hero-privacy-safe.png";
 import atlasTexture from "../assets/generated/orbit-atlas-texture.png";
 import orbitalHorizon from "../assets/generated/orbital-horizon-footer.png";
-import lifestyle from "../../photos/IMG_3978.jpeg";
-import atlasExterior from "../../photos/IMG_6816.jpeg";
-import atlasTires from "../../photos/IMG_6808.jpeg";
-import rearAreaMark from "../../photos/IMG_6809.jpeg";
-import interior from "../../photos/IMG_6849.jpeg";
-import damageClose from "../../photos/IMG_4265.jpeg";
-import damageWide from "../../photos/IMG_4266.jpeg";
+import lifestyle from "../assets/listing/lifestyle-side.jpg";
+import atlasExterior from "../assets/listing/atlas-exterior.jpg";
+import atlasTires from "../assets/listing/atlas-tires.jpg";
+import rearAreaMark from "../assets/listing/rear-area-mark.jpg";
+import interior from "../assets/listing/interior-console.jpg";
+import damageClose from "../assets/listing/damage-contact-close.jpg";
+import damageWide from "../assets/listing/damage-contact-wide.jpg";
 import repairPrep from "../assets/repair-prep.jpg";
-import repairAfter from "../../photos/IMG_4393.jpeg";
-import archiveFrontSide from "../../photos/IMG_0075.jpeg";
-import archiveSideDetail from "../../photos/8dc901e4-17bc-4c40-bcb7-c61e9ccf8ecb.jpg";
-import archiveRearQuarter from "../../photos/9fe40ce3-9669-447b-bae9-2926674d12d2.jpg";
-import archiveDoor from "../../photos/e70a31ec-8d2c-4bb1-8947-4ff0cc5e45e6.jpg";
+import repairAfter from "../assets/listing/repair-after.jpg";
+import archiveFrontSide from "../assets/listing/archive-front-side.jpg";
+import archiveSideDetail from "../assets/listing/archive-side-detail.jpg";
+import archiveRearQuarter from "../assets/listing/archive-rear-quarter.jpg";
+import archiveDoor from "../assets/listing/archive-door.jpg";
 
 export type MediaCategory = "today" | "interior" | "damage" | "repair" | "archive" | "generated";
 
@@ -62,7 +62,6 @@ export const mediaAssets: MediaAsset[] = [
     alt: "Siyah Golf'un ekspertiz alanında ön üç çeyrek görünümü",
     caption: "Dış görünüş atlası",
     source: "Satıcı fotoğrafı",
-    privacyMasks: [{ left: 0, top: 55, width: 18, height: 20 }],
   },
   {
     id: "atlas-tires",
@@ -89,7 +88,6 @@ export const mediaAssets: MediaAsset[] = [
     alt: "Ön temas sonrasında kaputtaki deformasyonun yakın görünümü",
     caption: "Temasın yakın görünümü",
     source: "Hasar anı fotoğrafı",
-    privacyMasks: [{ left: 38, top: 2, width: 7, height: 19 }],
   },
   {
     id: "damage-contact-wide",
@@ -116,7 +114,6 @@ export const mediaAssets: MediaAsset[] = [
     alt: "Onarım sonrasında Golf'un önden görünümü",
     caption: "Onarım sonrası görünüm",
     source: "Satıcı fotoğrafı",
-    privacyMasks: [{ left: 37, top: 61, width: 27, height: 12 }],
   },
   {
     id: "rear-area-mark",

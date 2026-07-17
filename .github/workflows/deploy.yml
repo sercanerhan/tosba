@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL: https://sercanerhan.github.io
+      BASE_PATH: /tosba
     steps:
       - uses: actions/checkout@v7
 
@@ -24,7 +27,7 @@ jobs:
         with:
           node-version: 24
           package-manager: pnpm@8.15.4
-          build-cmd: pnpm run build:live
+          build-cmd: pnpm run build
 
   deploy:
     needs: build
