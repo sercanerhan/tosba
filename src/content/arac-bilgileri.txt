@@ -104,7 +104,7 @@ takilma_tarihi:
 kaynak: satici_beyani
 
 [bakim:son-periyodik]
-tarih: Şubat 2026
+tarih: 2026-02-24
 kilometre: 99000
 islem: Son periyodik bakım bilgisi eklenecek.
 servis: Gültekin Oto
