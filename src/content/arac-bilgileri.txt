@@ -8,13 +8,13 @@
 baslik: 2012 Golf 1.4 TSI 122 HP Trendline Manuel
 fiyat_tl:
 pazarlik: Görüşülür
-sehir:
-ilce:
+sehir: İstanbul
+ilce: Bakırköy
 whatsapp:
-guncel_fotograf_tarihi:
-muayene_son:
-anahtar_sayisi:
-satis_nedeni:
+guncel_fotograf_tarihi: Temmuz 2026
+muayene_son: 2027 Şubat'a kadar Geçerli
+anahtar_sayisi: 2
+satis_nedeni: 
 ekspertize_acik: evet
 test_surusu: Randevu ile
 
@@ -32,7 +32,7 @@ vites: Manuel
 vites_sayisi: 6
 kapi_sayisi: 5
 renk: Siyah
-kilometre:
+kilometre: 101000
 
 [sahiplik]
 ilk_sahibi: evet
@@ -45,13 +45,13 @@ kaynak: satici_beyani
 [durum]
 boya_ozeti: İki çamurluk lokal boyalı; sağ ve sol taraf bilgisi teyit edilecek.
 hasar_ozeti: Kaput, yetkili servis ve sigorta süreci kapsamında değiştirildi.
-tramer_durumu: bilinmiyor
-tramer_tutari:
+tramer_durumu: 2 Adet
+tramer_tutari: 20Bin
 kaput_durumu: Değişen
-radyator_durumu: Satıcı beyanına göre değişmedi; servis belgesiyle teyit bekleniyor.
-sasi_podye_direk: bilinmiyor
-airbag_durumu: bilinmiyor
-arka_bolge_guncel_durum: bilinmiyor
+radyator_durumu: Orjinal
+sasi_podye_direk: İşlem Görmedi
+airbag_durumu: Orjinal, İşlem Görmedi
+arka_bolge_guncel_durum: Orjinal, İşlem Görmedi
 kaynak: satici_beyani,fotograf
 
 [donanim]
@@ -65,9 +65,9 @@ kaynak: satici_beyani,fotograf
 
 [lastik:on-sol]
 konum: Ön sol
-marka:
-model:
-ebat:
+marka: Goodyear
+model: 91V FP EfficientGrip Performance
+ebat: 205/55R16
 dot:
 dis_mm:
 takilma_tarihi:
@@ -75,9 +75,9 @@ kaynak: satici_beyani
 
 [lastik:on-sag]
 konum: Ön sağ
-marka:
-model:
-ebat:
+marka: Goodyear
+model: 91V FP EfficientGrip Performance
+ebat: 205/55R16
 dot:
 dis_mm:
 takilma_tarihi:
@@ -85,9 +85,9 @@ kaynak: satici_beyani
 
 [lastik:arka-sol]
 konum: Arka sol
-marka:
-model:
-ebat:
+marka: Goodyear
+model: 91V FP EfficientGrip Performance
+ebat: 205/55R16
 dot:
 dis_mm:
 takilma_tarihi:
@@ -95,19 +95,19 @@ kaynak: satici_beyani
 
 [lastik:arka-sag]
 konum: Arka sağ
-marka:
-model:
-ebat:
+marka: Goodyear
+model: 91V FP EfficientGrip Performance
+ebat: 205/55R16
 dot:
 dis_mm:
 takilma_tarihi:
 kaynak: satici_beyani
 
 [bakim:son-periyodik]
-tarih:
-kilometre:
+tarih: Şubat 2026
+kilometre: 99bin
 islem: Son periyodik bakım bilgisi eklenecek.
-servis:
+servis: Gültekin Oto
 belge:
 kaynak: satici_beyani
 
