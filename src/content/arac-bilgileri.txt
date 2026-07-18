@@ -11,8 +11,8 @@ pazarlik: Görüşülür
 sehir: İstanbul
 ilce: Bakırköy
 whatsapp:
-guncel_fotograf_tarihi: Temmuz 2026
-muayene_son: 2027 Şubat'a kadar Geçerli
+guncel_fotograf_tarihi: 2026-07-16
+muayene_son: 2026-02-24
 anahtar_sayisi: 2
 satis_nedeni: 
 ekspertize_acik: evet
@@ -46,7 +46,7 @@ kaynak: satici_beyani
 boya_ozeti: İki çamurluk lokal boyalı; sağ ve sol taraf bilgisi teyit edilecek.
 hasar_ozeti: Kaput, yetkili servis ve sigorta süreci kapsamında değiştirildi.
 tramer_durumu: 2 Adet
-tramer_tutari: 20Bin
+tramer_tutari: 20000
 kaput_durumu: Değişen
 radyator_durumu: Orjinal
 sasi_podye_direk: İşlem Görmedi
@@ -105,7 +105,7 @@ kaynak: satici_beyani
 
 [bakim:son-periyodik]
 tarih: Şubat 2026
-kilometre: 99bin
+kilometre: 99000
 islem: Son periyodik bakım bilgisi eklenecek.
 servis: Gültekin Oto
 belge:
