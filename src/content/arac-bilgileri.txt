@@ -68,7 +68,7 @@ konum: Ön sol
 marka: Goodyear
 model: 91V FP EfficientGrip Performance
 ebat: 205/55R16
-dot:
+dot: 0724
 dis_mm:
 takilma_tarihi:
 kaynak: satici_beyani
@@ -78,7 +78,7 @@ konum: Ön sağ
 marka: Goodyear
 model: 91V FP EfficientGrip Performance
 ebat: 205/55R16
-dot:
+dot: 0724
 dis_mm:
 takilma_tarihi:
 kaynak: satici_beyani
@@ -88,7 +88,7 @@ konum: Arka sol
 marka: Goodyear
 model: 91V FP EfficientGrip Performance
 ebat: 205/55R16
-dot:
+dot: 0119
 dis_mm:
 takilma_tarihi:
 kaynak: satici_beyani
@@ -98,7 +98,7 @@ konum: Arka sağ
 marka: Goodyear
 model: 91V FP EfficientGrip Performance
 ebat: 205/55R16
-dot:
+dot: 0119
 dis_mm:
 takilma_tarihi:
 kaynak: satici_beyani
