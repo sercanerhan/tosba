@@ -19,17 +19,17 @@ export class ListingParseError extends Error {
 
 const allowedKeys: Record<string, readonly string[]> = {
   ilan: [
-    "baslik", "fiyat_tl", "pazarlik", "sehir", "ilce", "whatsapp",
+    "baslik", "durum", "satis_tarihi", "fiyat_tl", "pazarlik", "sehir", "ilce", "whatsapp",
     "guncel_fotograf_tarihi", "muayene_son", "anahtar_sayisi",
     "satis_nedeni", "ekspertize_acik", "test_surusu",
   ],
   arac: [
-    "marka", "model", "kasa", "paket", "model_yili", "ilk_tescil_yili",
+    "marka", "lakap", "model", "kasa", "paket", "model_yili", "ilk_tescil_yili",
     "motor", "guc_hp", "yakit", "vites", "vites_sayisi", "kapi_sayisi",
     "renk", "kilometre",
   ],
   sahiplik: [
-    "ilk_sahibi", "sahiplik_yili", "kisa_hikaye", "uyari_deneyimi",
+    "ilk_sahibi", "baslangic_tarihi", "sahiplik_yili", "kisa_hikaye", "uyari_deneyimi",
     "kullanim_aliskanligi", "kaynak",
   ],
   durum: [
@@ -142,6 +142,8 @@ export function parseListing(input: string): CarListing {
   return listingSchema.parse({
     ad: {
       title: value(ad, "baslik"),
+      status: value(ad, "durum") || "satilik",
+      soldAt: value(ad, "satis_tarihi"),
       priceTl: value(ad, "fiyat_tl"),
       negotiation: value(ad, "pazarlik"),
       city: value(ad, "sehir"),
@@ -156,6 +158,7 @@ export function parseListing(input: string): CarListing {
     },
     car: {
       make: value(car, "marka"),
+      nickname: value(car, "lakap"),
       model: value(car, "model"),
       generation: value(car, "kasa"),
       trim: value(car, "paket"),
@@ -172,6 +175,7 @@ export function parseListing(input: string): CarListing {
     },
     ownership: {
       firstOwner: parseBoolean(value(ownership, "ilk_sahibi"), "ilk_sahibi"),
+      startedAt: value(ownership, "baslangic_tarihi"),
       years: value(ownership, "sahiplik_yili"),
       shortStory: value(ownership, "kisa_hikaye"),
       warningExperience: value(ownership, "uyari_deneyimi"),
@@ -238,19 +242,38 @@ export function readListing(): CarListing {
   return parseListing(readFileSync(fileURLToPath(listingFileUrl), "utf8"));
 }
 
-export const liveRequiredFields = [
-  ["ilan.fiyat_tl", (listing: CarListing) => listing.ad.priceTl],
+type RequiredField = readonly [path: string, getter: (listing: CarListing) => string];
+
+const sharedLiveRequiredFields = [
   ["ilan.sehir", (listing: CarListing) => listing.ad.city],
-  ["ilan.whatsapp", (listing: CarListing) => listing.ad.whatsapp],
   ["ilan.guncel_fotograf_tarihi", (listing: CarListing) => listing.ad.currentPhotoDate],
   ["ilan.muayene_son", (listing: CarListing) => listing.ad.inspectionExpiry],
   ["ilan.anahtar_sayisi", (listing: CarListing) => listing.ad.keyCount],
   ["arac.kilometre", (listing: CarListing) => listing.car.mileage],
   ["durum.tramer_durumu", (listing: CarListing) => listing.condition.tramerStatus],
-] as const;
+] as const satisfies readonly RequiredField[];
+
+export const liveRequiredFields = [
+  ["ilan.fiyat_tl", (listing: CarListing) => listing.ad.priceTl],
+  ["ilan.whatsapp", (listing: CarListing) => listing.ad.whatsapp],
+  ...sharedLiveRequiredFields,
+] as const satisfies readonly RequiredField[];
 
 export function getMissingLiveFields(listing: CarListing): string[] {
-  const missing: string[] = liveRequiredFields
+  let requiredFields: readonly RequiredField[];
+  switch (listing.ad.status) {
+    case "satilik":
+      requiredFields = liveRequiredFields;
+      break;
+    case "satildi":
+      requiredFields = sharedLiveRequiredFields;
+      break;
+    default:
+      listing.ad.status satisfies never;
+      requiredFields = sharedLiveRequiredFields;
+  }
+
+  const missing: string[] = requiredFields
     .filter(([, getter]) => !getter(listing))
     .map(([path]) => path);
 

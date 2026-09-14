@@ -27,7 +27,7 @@ export const hotspots: Hotspot[] = [
     y: 58,
     title: "1.4 TSI · 122 HP",
     summary: "Benzinli motor ve 6 ileri manuel şanzıman.",
-    detail: "Motor ve şanzımanla ilgili bakım kayıtları, tarih ve kilometre bilgileri eklendikçe bakım yörüngesinde görünür.",
+    detail: "Motor ve şanzımanla ilgili elde kalan tarih ve kilometre bilgileri bakım yörüngesinde korunur.",
     sources: ["satici_beyani"],
   },
   {
@@ -37,7 +37,7 @@ export const hotspots: Hotspot[] = [
     y: 76,
     title: "Sis farları",
     summary: "Trendline donanımına ek olarak araç üzerinde teslim edildi.",
-    detail: "Fabrika/teslim donanımı ayrımı, araç evrakı veya donanım etiketi sağlandığında belge kaynağıyla güncellenecek.",
+    detail: "Fabrika ve teslim donanımı ayrımını doğrulayacak araç evrakı bu arşivde bulunmuyor.",
     sources: ["satici_beyani", "fotograf"],
   },
   {
@@ -47,7 +47,7 @@ export const hotspots: Hotspot[] = [
     y: 76,
     title: "Çift renkli 16 inç jantlar",
     summary: "Araçla birlikte gelen çift renkli alaşım jantlar.",
-    detail: "Her jant ve lastiğin güncel yakın planı, DOT ve diş derinliğiyle birlikte canlı yayın öncesinde eklenecek.",
+    detail: "Dört lastiğin marka, ebat, DOT ve diş derinliği kayıtları araç pasaportunda ayrı ayrı korunur.",
     sources: ["satici_beyani", "fotograf"],
   },
   {
@@ -57,7 +57,7 @@ export const hotspots: Hotspot[] = [
     y: 62,
     title: "Arka park sensörü",
     summary: "Araç tesliminde yetkili serviste sonradan takıldı.",
-    detail: "Montaj bilgisi satıcı beyanıdır; servis faturası bulunursa kaynak etiketi güncellenecek.",
+    detail: "Montaj bilgisi ilk sahibinin kaydıdır; bunu doğrulayacak servis faturası arşivde bulunmuyor.",
     sources: ["satici_beyani", "fotograf"],
   },
   {
@@ -77,7 +77,7 @@ export const hotspots: Hotspot[] = [
     y: 49,
     title: "6'lı CD ünitesi",
     summary: "Araçla birlikte gelen RCD multimedya ünitesi.",
-    detail: "Ünitenin çalışma durumu ve varsa telefon bağlantı özellikleri canlı bilgi dosyasında netleştirilecek.",
+    detail: "Ünitenin çalışma durumu ve telefon bağlantı özellikleri ilk sahiplik döneminde ayrıca belgelenmedi.",
     sources: ["satici_beyani", "fotograf"],
   },
   {
@@ -87,7 +87,7 @@ export const hotspots: Hotspot[] = [
     y: 87,
     title: "6 ileri manuel",
     summary: "Deri vites topuzu ile manuel şanzıman.",
-    detail: "Debriyaj ve şanzıman bakım geçmişi, ilgili kayıtlar eklendiğinde bakım yörüngesinde gösterilecek.",
+    detail: "Debriyaj ve şanzıman için elde kalan bakım bilgileri bakım yörüngesinde gösterilir.",
     sources: ["fotograf", "satici_beyani"],
   },
   {
@@ -96,7 +96,7 @@ export const hotspots: Hotspot[] = [
     x: 69,
     y: 77,
     title: "Arka lastik",
-    summary: "Marka, model, ebat, DOT ve diş derinliği bekleniyor.",
+    summary: "Marka, model, ebat, DOT ve diş derinliği ayrı kayıtlarda.",
     detail: "Dört lastik birbirinden bağımsız kaydedilir. DOT kodu hafta/yıl biçiminde gösterilir.",
     sources: ["fotograf", "satici_beyani"],
   },
@@ -106,8 +106,8 @@ export const hotspots: Hotspot[] = [
     x: 16,
     y: 68,
     title: "Ön lastik",
-    summary: "Yenileme tarihi ve güncel üretim tarihi bilgi dosyasına eklenecek.",
-    detail: "Ön lastiklerin yenileme bilgisi doğrulandığında iki konum için ayrı ayrı yayınlanır.",
+    summary: "Son kayıtlı marka, ebat ve üretim tarihi araç pasaportunda.",
+    detail: "Ön lastiklerin ilk sahiplik döneminden kalan bilgileri iki konum için ayrı ayrı saklanır.",
     sources: ["satici_beyani", "fotograf"],
   },
 ];

@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: process.env.TARGET_URL ?? "http://localhost:4321",
+    channel: "chrome",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },

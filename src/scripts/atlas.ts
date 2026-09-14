@@ -11,7 +11,7 @@ if (root) {
   const close = root.querySelector<HTMLButtonElement>("[data-atlas-close]");
   let origin: HTMLButtonElement | null = null;
 
-  const sourceLabel = (source: string) => source === "fotograf" ? "Fotoğraf" : source === "servis_belgesi" ? "Servis belgesi" : "Satıcı beyanı";
+  const sourceLabel = (source: string) => source === "fotograf" ? "Fotoğraf" : source === "servis_belgesi" ? "Servis belgesi" : "İlk sahibi kaydı";
 
   function writeSources(target: Element | null, sources: string[]) {
     if (!target) return;

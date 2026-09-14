@@ -1,13 +1,15 @@
-# 14 Yıllık Yörünge — tek içerik kaynağı
+# Tosba · 14 Yıllık Yörünge - tek içerik kaynağı
 #
 # Değerleri iki noktanın sağında güncelleyin. Bilmediğiniz kritik bir alan için
 # "bilinmiyor" yazın; tahmin yürütmeyin. Tarihler YYYY-AA-GG, DOT kodları WWYY,
 # kilometre ve fiyat yalnız rakam olmalıdır.
 
 [ilan]
-baslik: 2012 Golf 1.4 TSI 122 HP Trendline Manuel
+baslik: Tosba · 2012 Golf 1.4 TSI 122 HP
+durum: satildi
+satis_tarihi: 2026-09-14
 fiyat_tl:
-pazarlik: Görüşülür
+pazarlik:
 sehir: İstanbul
 ilce: Bakırköy
 whatsapp:
@@ -15,11 +17,12 @@ guncel_fotograf_tarihi: 2026-07-16
 muayene_son: 2026-02-24
 anahtar_sayisi: 2
 satis_nedeni: 
-ekspertize_acik: evet
-test_surusu: Randevu ile
+ekspertize_acik: hayir
+test_surusu:
 
 [arac]
 marka: Volkswagen
+lakap: Tosba
 model: Golf
 kasa: Mk6
 paket: Trendline
@@ -36,8 +39,9 @@ kilometre: 101000
 
 [sahiplik]
 ilk_sahibi: evet
+baslangic_tarihi: 2012-03-08
 sahiplik_yili: 14
-kisa_hikaye: 14 yıldır kullandığım, sevdiğim ve nasıl kullanıldığını başından beri bildiğim yol arkadaşım.
+kisa_hikaye: 14 yıl boyunca kullandığım, sevdiğim ve nasıl kullanıldığını başından beri bildiğim yol arkadaşım. 14 Eylül 2026'da yeni sahibine uğurladım.
 uyari_deneyimi: 14 yıllık kullanımım boyunca arıza veya uyarı ışığı yaşamadım.
 kullanim_aliskanligi: Motoru çalıştırdıktan sonra ve durdurmadan önce en az 30 saniye beklemeyi alışkanlık edindim.
 kaynak: satici_beyani
@@ -126,24 +130,24 @@ kaynak: satici_beyani,fotograf
 baslik: Lokal boyalı çamurluklar
 tarih:
 kilometre:
-aciklama: İki çamurlukta lokal boya bulunmaktadır. Sağ ve sol taraf bilgisi canlı yayın öncesinde netleştirilecektir.
+aciklama: İki çamurlukta lokal boya bulunmaktadır. Sağ ve sol taraf bilgisi ilk sahiplik döneminde ayrıca kayda geçirilmemiştir.
 degisen:
-boyanan: İki çamurluk; taraflar teyit bekliyor
+boyanan: İki çamurluk; taraflar arşivde belgelenmedi
 tramer:
 fotograflar: rear-area-mark
 kaynak: satici_beyani,fotograf
 
 [sss:ilk-sahip]
 soru: Araç kaçıncı sahibinden?
-cevap: Araç ilk sahibinden satılıktır ve 14 yıldır aynı kişi tarafından kullanılmaktadır.
+cevap: Tosba, 8 Mart 2012 ile 14 Eylül 2026 arasında ilk sahibi tarafından kullanıldı ve artık yeni sahibindedir.
 kaynak: satici_beyani
 
 [sss:hasar]
 soru: Değişen ve boyalı parçalar neler?
-cevap: Kaput değişmiştir. İki çamurluk lokal boyalıdır; taraf bilgisi teyit edilip bu dosyada güncellenecektir.
+cevap: Kaput değişmiştir. İki çamurluk lokal boyalıdır; sağ ve sol taraf bilgisi ilk sahiplik döneminde ayrıca belgelenmemiştir.
 kaynak: satici_beyani,fotograf
 
-[sss:ekspertiz]
-soru: Ekspertize açık mı?
-cevap: Evet. Görüşme ve ekspertiz randevusu WhatsApp üzerinden planlanabilir.
+[sss:arsiv]
+soru: Araç hâlâ satılık mı?
+cevap: Hayır. Tosba 14 Eylül 2026 tarihinde satıldı. Bu site, 14 yıllık hikâyesinin ve şeffaf araç kaydının arşivi olarak korunuyor.
 kaynak: satici_beyani

@@ -1,9 +1,83 @@
 import { expect, test } from "@playwright/test";
+import { dismissFarewell } from "./helpers";
 
-test("ana satış bilgileri görünür ve yatay taşma yok", async ({ page }, testInfo) => {
+test("veda perdesi açılır ve kapatıldığında odağı ana hikâyeye verir", async ({ page }) => {
   await page.goto("/");
+
+  const curtain = page.getByRole("dialog", { name: "Tosba" });
+  await expect(curtain).toBeVisible();
+  await expect(page.getByRole("button", { name: "Vedayı kapat" })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).overflow)).toBe("hidden");
+
+  await page.getByRole("button", { name: "Vedayı kapat" }).click();
+
+  await expect(curtain).not.toBeVisible();
+  await expect(page.locator("#ana-icerik")).toBeFocused();
+});
+
+test("veda perdesi her yüklemede yeniden açılır ve tüm kapatma yollarını destekler", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const curtain = page.getByRole("dialog", { name: "Tosba" });
+
+  await page.goto("/");
+  await expect(curtain).toBeVisible();
+  await expect(page.getByRole("button", { name: "Hikâyeyi aç" })).toBeVisible();
+  await page.getByRole("button", { name: "Hikâyeyi aç" }).click();
+  await expect(curtain).not.toBeVisible();
+
+  await page.reload();
+  await expect(curtain).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(curtain).not.toBeVisible();
+
+  await page.reload();
+  await expect(curtain).toBeVisible();
+});
+
+test("veda açıkken arka plan kaydırma ve etkileşim almaz", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("dialog", { name: "Tosba" })).toBeVisible();
+
+  await page.evaluate(() => {
+    document.querySelector("main")?.addEventListener("click", () => {
+      document.documentElement.dataset.backgroundClicked = "true";
+    });
+  });
+  await page.mouse.click(12, 12);
+  await page.mouse.wheel(0, 900);
+
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.backgroundClicked ?? "false")).toBe("false");
+});
+
+test("veda son eylemi görünene kadar odağa girmez ve ilk tarih karesi oynar", async ({ page }) => {
+  await page.goto("/");
+  const finalFrame = page.locator("[data-farewell-final]");
+
+  await expect.poll(async () => Number(await page.locator(".farewell__beat--start").evaluate((element) => getComputedStyle(element).opacity))).toBeGreaterThan(0.1);
+  await expect(finalFrame).toHaveAttribute("inert", "");
+  await page.keyboard.press("Tab");
+  await expect(page.locator("[data-farewell-enter]")).not.toBeFocused();
+  await expect.poll(() => page.evaluate(() => document.activeElement?.closest("[data-farewell-final]") === null)).toBe(true);
+});
+
+test("veda kapatıldığında satılık ilan yerine arşiv görünür", async ({ page }) => {
+  await page.goto("/");
+  await dismissFarewell(page);
+
+  await expect(page.getByLabel("Hızlı arşiv bilgileri")).toBeVisible();
+  await expect(page.getByText("Satıldı · 14 Eyl 2026", { exact: true })).toBeVisible();
+  await expect(page.getByText(/WhatsApp/)).toHaveCount(0);
+  await expect(page.getByText("Ekspertize açık", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Satış hazırlığı", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("FİYAT", { exact: true })).toHaveCount(0);
+});
+
+test("ana arşiv bilgileri görünür ve yatay taşma yok", async ({ page }, testInfo) => {
+  await page.goto("/");
+  await dismissFarewell(page);
   await expect(page.getByRole("heading", { level: 1, name: "14 Yıllık Yörünge" })).toBeVisible();
-  await expect(page.getByLabel("Hızlı satış bilgileri")).toBeVisible();
+  await expect(page.getByLabel("Hızlı arşiv bilgileri")).toBeVisible();
 
   const viewportWidth = testInfo.project.use.viewport?.width ?? 0;
   const dimensions = await page.evaluate(() => ({
@@ -15,7 +89,8 @@ test("ana satış bilgileri görünür ve yatay taşma yok", async ({ page }, te
 
 test("atlas modları, hotspot ve odak dönüşü çalışır", async ({ page }, testInfo) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Aracı keşfet" }).click();
+  await dismissFarewell(page);
+  await page.locator("#arac-atlasi").scrollIntoViewIfNeeded();
   await page.getByRole("tab", { name: /İç mekân/ }).click();
   await expect(page.getByRole("tab", { name: /İç mekân/ })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("tab", { name: /Dış görünüş/ }).click();
@@ -36,6 +111,7 @@ test("atlas modları, hotspot ve odak dönüşü çalışır", async ({ page }, 
 
 test("yolculuk atlası 15 durağı gösterir ve seçim haritayı günceller", async ({ page }, testInfo) => {
   await page.goto("/");
+  await dismissFarewell(page);
   if ((testInfo.project.use.viewport?.width ?? 0) <= 767) {
     await page.getByRole("button", { name: /Menü/ }).click();
   }
@@ -68,6 +144,7 @@ test("yolculuk atlası 15 durağı gösterir ve seçim haritayı günceller", as
 
 test("galeri filtrelenir ve büyütme açılır", async ({ page }) => {
   await page.goto("/");
+  await dismissFarewell(page);
   const gallery = page.locator("#galeri");
   await expect(gallery).toHaveAttribute("data-gallery-ready", "true");
   await gallery.scrollIntoViewIfNeeded();
@@ -80,19 +157,23 @@ test("galeri filtrelenir ve büyütme açılır", async ({ page }) => {
   await page.locator(".pswp__button--close").click();
 });
 
-test("WhatsApp numarası eksikken dürüst durum penceresi açılır", async ({ page }) => {
+test("arşiv vedası başa dönüş bağlantısını sunar", async ({ page }) => {
   await page.goto("/");
-  await page.locator("#iletisim").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Görüşme talebi" }).click();
-  await page.getByRole("button", { name: "WhatsApp'tan konuşalım" }).click();
-  await expect(page.getByRole("dialog", { name: "Bir bilgi daha gerekiyor." })).toBeVisible();
+  await dismissFarewell(page);
+  await page.locator("#veda").scrollIntoViewIfNeeded();
+  await expect(page.getByRole("heading", { name: "Yolun açık olsun, Tosba." })).toBeVisible();
+  await page.getByRole("link", { name: "Başa dön" }).click();
+  await expect(page.locator("#top")).toBeInViewport();
 });
 
-test("azaltılmış hareket tercihi doğal akışı korur", async ({ page }) => {
+test("azaltılmış hareket tercihi doğrudan son yazıyı gösterir ve doğal akışı korur", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
+  await expect(page.getByRole("dialog", { name: "Tosba" }).getByText("08.03.2012 · 14.09.2026", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Hikâyeyi aç" })).toBeVisible();
+  await page.getByRole("button", { name: "Hikâyeyi aç" }).click();
   const heroPosition = await page.locator("[data-hero]").evaluate((element) => getComputedStyle(element).position);
   expect(heroPosition).toBe("relative");
-  await page.getByRole("link", { name: "Aracı keşfet" }).click();
-  await expect(page.locator("#arac-atlasi")).toBeInViewport();
+  await page.getByRole("link", { name: "Hikâyeyi oku" }).click();
+  await expect(page.locator("#hikaye")).toBeInViewport();
 });

@@ -1,5 +1,3 @@
-import PhotoSwipeLightbox from "photoswipe/lightbox";
-
 const root = document.querySelector<HTMLElement>("[data-gallery]");
 
 if (root) {
@@ -15,13 +13,22 @@ if (root) {
     });
   }));
 
-  const lightbox = new PhotoSwipeLightbox({
-    pswpModule: () => import("photoswipe"),
-    bgOpacity: 0.94,
-    showHideAnimationType: "fade",
-    wheelToZoom: true,
-  });
-  lightbox.init();
+  const createLightbox = async () => {
+    const [{ default: PhotoSwipeLightbox }] = await Promise.all([
+      import("photoswipe/lightbox"),
+      import("photoswipe/style.css"),
+    ]);
+    const lightbox = new PhotoSwipeLightbox({
+      pswpModule: () => import("photoswipe"),
+      bgOpacity: 0.94,
+      showHideAnimationType: "fade",
+      wheelToZoom: true,
+    });
+    lightbox.init();
+    return lightbox;
+  };
+  let lightboxPromise: ReturnType<typeof createLightbox> | undefined;
+
   root.addEventListener("click", (event) => {
     const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>(".gallery-card__link") : null;
     if (!target) return;
@@ -29,13 +36,16 @@ if (root) {
     const links = [...root.querySelectorAll<HTMLAnchorElement>(".gallery-card:not([hidden]) .gallery-card__link")];
     const index = links.indexOf(target);
     if (index < 0) return;
-    lightbox.loadAndOpen(index, links.map((link) => ({
-      src: link.href,
-      width: Number(link.dataset.pswpWidth),
-      height: Number(link.dataset.pswpHeight),
-      alt: link.querySelector("img")?.alt ?? "",
-      element: link,
-    })));
+    lightboxPromise ??= createLightbox();
+    void lightboxPromise.then((lightbox) => {
+      lightbox.loadAndOpen(index, links.map((link) => ({
+        src: link.href,
+        width: Number(link.dataset.pswpWidth),
+        height: Number(link.dataset.pswpHeight),
+        alt: link.querySelector("img")?.alt ?? "",
+        element: link,
+      })));
+    });
   });
   root.dataset.galleryReady = "true";
 }

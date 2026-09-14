@@ -16,7 +16,7 @@ const after = mediaById["repair-after"]!;
   <div class="page-shell">
     <div class="chapter__heading transparency__heading">
       <p class="eyebrow eyebrow--warning">Şeffaflık dosyası</p>
-      <h2 id="transparency-title">Gizlemek yerine, bağlamını gösteriyorum.</h2>
+      <h2 id="transparency-title">Kusurları değil, bağlamını saklıyor.</h2>
       <p>Hasar, boya ve onarım bilgileri; kesinlik düzeyleri ve mevcut kanıtlarıyla birlikte paylaşılır.</p>
     </div>
 
@@ -35,8 +35,9 @@ const after = mediaById["repair-after"]!;
         <strong class:list={{ pending: listing.condition.tramerStatus === "bilinmiyor" }}>{listing.condition.tramerStatus}</strong>
       </div>
       <div>
-        <span class="technical">EKSPERTİZ</span>
-        <strong>{listing.ad.openToInspection ? "Açık" : "Bilgi bekleniyor"}</strong>
+        <span class="technical">SON KAYIT</span>
+        <strong>Devir</strong>
+        <small>{formatDate(listing.ad.soldAt)}</small>
       </div>
     </div>
 
@@ -87,7 +88,7 @@ const after = mediaById["repair-after"]!;
       <Icon name="ph:info" aria-hidden="true" />
       <div>
         <strong>Kesinlik notu</strong>
-        <p>{listing.condition.radiatorStatus} Şasi, podye, direk ve airbag bilgileri güncel ekspertizle teyit edilmelidir.</p>
+        <p>{listing.condition.radiatorStatus} Şasi, podye, direk ve airbag bilgileri bu arşivde belgeyle doğrulanmamıştır.</p>
       </div>
       <SourceTags sources={listing.condition.sources} warning />
     </aside>

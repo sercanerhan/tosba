@@ -1,5 +1,4 @@
 ---
-import "photoswipe/style.css";
 import "../styles/fonts.css";
 import "../styles/global.css";
 
@@ -7,10 +6,12 @@ type Props = {
   title: string;
   description: string;
   image: string;
+  preloadImage: string;
+  preloadImageSrcset: string;
   jsonLd: Record<string, unknown>;
 };
 
-const { title, description, image, jsonLd } = Astro.props;
+const { title, description, image, preloadImage, preloadImageSrcset, jsonLd } = Astro.props;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
 const socialImage = Astro.site ? new URL(image, Astro.site) : new URL(image, Astro.url);
@@ -23,11 +24,12 @@ const socialImage = Astro.site ? new URL(image, Astro.site) : new URL(image, Ast
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#02070D" />
     <meta name="color-scheme" content="dark" />
+    <link rel="preload" as="image" href={preloadImage} imagesrcset={preloadImageSrcset} imagesizes="100vw" type="image/avif" fetchpriority="high" />
     <link rel="icon" href={`${basePath}/favicon.png`} type="image/png" />
     <meta name="description" content={description} />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="product" />
+    <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

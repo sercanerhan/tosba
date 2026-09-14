@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import type { CarListing } from "../lib/listing-schema";
 import { formatDate, formatNumber } from "../lib/listing-parser";
 import SourceTags from "./SourceTags.astro";
@@ -49,12 +48,12 @@ const { listing } = Astro.props;
 
       <article class="timeline__event timeline__event--now" data-timeline-event>
         <div class="timeline__node" aria-hidden="true"></div>
-        <div class="timeline__date technical">ŞİMDİ</div>
+        <div class="timeline__date technical">{formatDate(listing.ad.soldAt)}</div>
         <div class="timeline__body">
-          <p class="timeline__type">Satış hazırlığı</p>
-          <h3>Ekspertize açık</h3>
-          <p>Güncel kilometre, bakım tarihi ve servis belgeleri eklendiğinde bu bölüm canlı yayına hazır olacak.</p>
-          <a class="action action--quiet" href="#iletisim">Görüşme talebi <Icon name="ph:arrow-right" aria-hidden="true" /></a>
+          <p class="timeline__type">Devir</p>
+          <h3>Yeni sahibine uğurlandı</h3>
+          <p>8 Mart 2012'de başlayan ilk sahiplik yörüngesi, 14 Eylül 2026'da tamamlandı. Bakım ve şeffaflık kayıtları Tosba'nın kalıcı arşivinde yaşamaya devam ediyor.</p>
+          <SourceTags sources={listing.ownership.sources} />
         </div>
       </article>
     </div>

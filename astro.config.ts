@@ -27,6 +27,7 @@ export default defineConfig({
         ph: [
           "arrow-down",
           "arrow-right",
+          "arrow-up",
           "arrows-out",
           "camera",
           "check",
@@ -37,10 +38,8 @@ export default defineConfig({
           "info",
           "list",
           "plus",
-          "printer",
           "shield-check",
           "user-circle",
-          "whatsapp-logo",
           "x",
         ],
       },

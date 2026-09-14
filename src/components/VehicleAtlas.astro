@@ -17,7 +17,7 @@ const initialHotspot = hotspotsByMode.exterior[0]!;
     <div class="chapter__heading atlas__heading">
       <p class="eyebrow">Etkileşimli araç atlası</p>
       <h2 id="atlas-title">Fotoğrafın üzerinde, bilgiye dokun.</h2>
-      <p>Beyaz yörünge noktaları fotoğrafta doğrulanabilen parçaları ve satıcı notlarını açar.</p>
+      <p>Beyaz yörünge noktaları fotoğrafta doğrulanabilen parçaları ve ilk sahibinin notlarını açar.</p>
     </div>
 
     <div class="atlas__tabs" role="tablist" aria-label="Araç atlası görünümü">
@@ -83,7 +83,7 @@ const initialHotspot = hotspotsByMode.exterior[0]!;
         </div>
         <ul class="source-tags" data-detail-sources>
           {initialHotspot.sources.map((source) => (
-            <li class="source-tag">{source === "fotograf" ? "Fotoğraf" : "Satıcı beyanı"}</li>
+            <li class="source-tag">{source === "fotograf" ? "Fotoğraf" : "İlk sahibi kaydı"}</li>
           ))}
         </ul>
         <span class="atlas__mode technical" data-detail-mode>Dış görünüş</span>

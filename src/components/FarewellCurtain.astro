@@ -1,0 +1,324 @@
+---
+import { Picture } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import type { CarListing } from "../lib/listing-schema";
+import hero from "../assets/generated/hero-privacy-safe.png";
+
+type Props = { listing: CarListing };
+const { listing } = Astro.props;
+const dateFormatter = new Intl.DateTimeFormat("tr-TR", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+const startedAt = dateFormatter.format(new Date(`${listing.ownership.startedAt}T12:00:00`));
+const soldAt = dateFormatter.format(new Date(`${listing.ad.soldAt}T12:00:00`));
+---
+
+<dialog
+  class="farewell"
+  aria-labelledby="farewell-title"
+  aria-describedby="farewell-summary"
+  data-farewell
+>
+  <div class="farewell__media" aria-hidden="true">
+    <Picture
+      src={hero}
+      formats={["avif"]}
+      fallbackFormat="webp"
+      widths={[480, 768, 1086]}
+      sizes="100vw"
+      quality={35}
+      alt=""
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="farewell__veil" aria-hidden="true"></div>
+  <div class="farewell__grain" aria-hidden="true"></div>
+
+  <button class="farewell__close" type="button" data-farewell-close>
+    <span>Vedayı kapat</span>
+    <Icon name="ph:x" aria-hidden="true" />
+  </button>
+
+  <p class="sr-only" id="farewell-summary">
+    {listing.car.nickname}. {startedAt} ile {soldAt} arasında 14 yıl, tek hikâye.
+  </p>
+
+  <div class="farewell__sequence" aria-hidden="true">
+    <p class="farewell__beat farewell__beat--start technical">{startedAt}</p>
+    <p class="farewell__beat farewell__beat--story">14 yıl, tek hikâye.</p>
+  </div>
+
+  <div class="farewell__final" data-farewell-final inert aria-hidden="true">
+    <p class="farewell__name" id="farewell-title">{listing.car.nickname}</p>
+    <p class="farewell__dates technical">{startedAt} <span aria-hidden="true">·</span> {soldAt}</p>
+    <p class="farewell__epitaph">14 yıl, tek hikâye.</p>
+    <button class="farewell__enter" type="button" data-farewell-enter>
+      Hikâyeyi aç
+      <Icon name="ph:arrow-right" aria-hidden="true" />
+    </button>
+  </div>
+</dialog>
+
+<script src="../scripts/farewell.ts"></script>
+
+<style>
+  .farewell {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--memorial-surface);
+    color: var(--memorial-text);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .farewell::backdrop {
+    background: var(--memorial-backdrop);
+  }
+
+  .farewell__media,
+  .farewell__veil,
+  .farewell__grain {
+    position: absolute;
+    inset: 0;
+  }
+
+  .farewell__media {
+    z-index: -3;
+  }
+
+  .farewell__media :global(picture),
+  .farewell__media :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .farewell__media :global(img) {
+    object-fit: cover;
+    object-position: 55% 64%;
+    filter: grayscale(1) contrast(1.08) brightness(0.72);
+    transform: scale(1.02);
+  }
+
+  .farewell__veil {
+    z-index: -2;
+    background:
+      radial-gradient(circle at 65% 52%, transparent 0 20%, var(--memorial-veil) 76%),
+      linear-gradient(to top, var(--memorial-backdrop), transparent 65%);
+  }
+
+  .farewell__grain {
+    z-index: -1;
+    opacity: 0.55;
+    background-image: repeating-radial-gradient(
+      circle at 30% 20%,
+      transparent 0 1px,
+      color-mix(in srgb, var(--memorial-text) 4%, transparent) 1px 2px
+    );
+    background-size: var(--space-2) var(--space-2);
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  .farewell__close {
+    position: absolute;
+    z-index: 2;
+    top: var(--space-6);
+    right: var(--page-pad);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--memorial-border);
+    border-radius: var(--radius-control);
+    background: color-mix(in srgb, var(--memorial-surface) 72%, transparent);
+    color: var(--memorial-muted);
+    cursor: pointer;
+    font-size: var(--type-caption);
+    transition:
+      border-color 240ms ease-in-out,
+      color 240ms ease-in-out,
+      opacity 240ms ease-in-out;
+  }
+
+  .farewell__close:hover,
+  .farewell__close:focus-visible {
+    border-color: var(--memorial-text);
+    color: var(--memorial-text);
+  }
+
+  .farewell__close :global(svg) {
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+
+  .farewell__sequence,
+  .farewell__final {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: var(--space-20) var(--page-pad);
+    text-align: center;
+  }
+
+  .farewell__beat {
+    position: absolute;
+    max-width: 16ch;
+    color: var(--memorial-text);
+    font-size: var(--type-h1);
+    font-weight: 420;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    opacity: 0;
+    transform: translateY(var(--space-3));
+    animation: farewell-beat 1.45s var(--ease-standard) both;
+  }
+
+  .farewell__beat--start {
+    color: var(--memorial-muted);
+    font-family: var(--font-primary);
+    font-size: var(--type-lead);
+    letter-spacing: 0.16em;
+  }
+
+  .farewell__beat--story {
+    animation-delay: 1.35s;
+  }
+
+  .farewell__final {
+    align-content: center;
+    justify-items: center;
+    gap: var(--space-4);
+    opacity: 0;
+    transform: translateY(var(--space-3));
+    animation: farewell-final 720ms var(--ease-standard) 2.75s forwards;
+  }
+
+  .farewell__name {
+    font-size: var(--type-display);
+    font-weight: 420;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  .farewell__dates {
+    color: var(--memorial-muted);
+    font-family: var(--font-primary);
+    font-size: var(--type-caption);
+    letter-spacing: 0.12em;
+  }
+
+  .farewell__epitaph {
+    color: var(--memorial-text);
+    font-size: var(--type-lead);
+  }
+
+  .farewell__enter {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid var(--memorial-text);
+    border-radius: var(--radius-control);
+    background: var(--memorial-text);
+    color: var(--memorial-surface);
+    cursor: pointer;
+    font-weight: 560;
+    opacity: 0;
+    transform: translateY(var(--space-2));
+    animation: farewell-action 560ms var(--ease-standard) 3.2s forwards;
+    transition: filter 240ms ease-in-out;
+  }
+
+  .farewell__enter:hover,
+  .farewell__enter:focus-visible {
+    filter: brightness(0.86);
+  }
+
+  .farewell__enter :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    transition: transform 240ms var(--ease-standard);
+  }
+
+  .farewell__enter:hover :global(svg),
+  .farewell__enter:focus-visible :global(svg) {
+    transform: translateX(var(--space-1));
+  }
+
+  .farewell[data-closing="true"] {
+    opacity: 0;
+    transition: opacity 240ms ease-in-out;
+  }
+
+  @keyframes farewell-beat {
+    0%, 100% { opacity: 0; transform: translateY(var(--space-3)); }
+    22%, 72% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes farewell-final {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes farewell-action {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 767px) {
+    .farewell__media :global(img) {
+      object-position: 62% 70%;
+    }
+
+    .farewell__close span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .farewell__close {
+      width: 44px;
+      justify-content: center;
+      padding: 0;
+      border-radius: var(--radius-circle);
+    }
+
+    .farewell__dates {
+      letter-spacing: 0.08em;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .farewell__beat {
+      display: none;
+    }
+
+    .farewell__final,
+    .farewell__enter {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .farewell[data-closing="true"] {
+      transition: none;
+    }
+  }
+</style>

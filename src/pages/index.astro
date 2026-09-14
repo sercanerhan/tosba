@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import FarewellCurtain from "../components/FarewellCurtain.astro";
 import Hero from "../components/Hero.astro";
 import OwnerStory from "../components/OwnerStory.astro";
 import TravelMap from "../components/TravelMap.astro";
@@ -28,11 +29,19 @@ if (publicationMode === "live" && missing.length > 0) {
   throw new Error(`Canlı yayın için zorunlu alanlar eksik: ${missing.join(", ")}`);
 }
 
-const title = `${listing.car.modelYear} ${listing.car.make} ${listing.car.model} ${listing.car.engine} · İlk Sahibinden`;
-const description = `${listing.ownership.years} yıldır ilk sahibinde kullanılan ${listing.car.modelYear} ${listing.car.make} ${listing.car.model}. Teknik bilgiler, bakım geçmişi ve hasar şeffaflık kaydı.`;
+const title = `${listing.car.nickname} · 14 Yıllık Yörünge`;
+const description = `${listing.car.nickname}'nın 8 Mart 2012 ile 14 Eylül 2026 arasındaki ilk sahiplik hikâyesi. Yolculuklar, teknik bilgiler, bakım geçmişi ve şeffaflık kayıtlarından oluşan kalıcı araç arşivi.`;
 const heroImage = mediaById["hero-safe"]!.src;
 const socialImage = await getImage({ src: heroImage, width: 1200, height: 630, fit: "cover", format: "jpg", quality: 86 });
 const heroSrc = socialImage.src;
+const curtainWidths = [480, 768, 1086] as const;
+const curtainPreloads = await Promise.all(curtainWidths.map((width) =>
+  getImage({ src: heroImage, width, format: "avif", quality: 35 })
+));
+const curtainPreloadSrcset = curtainPreloads
+  .map((image, index) => `${image.src} ${curtainWidths[index]}w`)
+  .join(", ");
+const curtainPreloadHref = curtainPreloads.at(-1)?.src ?? heroSrc;
 const vehicle: Record<string, unknown> = {
   "@type": "Vehicle",
   name: listing.ad.title,
@@ -51,22 +60,20 @@ if (listing.car.mileage) {
   vehicle.mileageFromOdometer = { "@type": "QuantitativeValue", value: Number(listing.car.mileage), unitCode: "KMT" };
 }
 
-if (listing.ad.priceTl) {
-  vehicle.offers = {
-    "@type": "Offer",
-    priceCurrency: "TRY",
-    price: Number(listing.ad.priceTl),
-    availability: "https://schema.org/InStock",
-    itemCondition: "https://schema.org/UsedCondition",
-  };
-}
-
 const jsonLd = { "@context": "https://schema.org", ...vehicle };
 ---
 
-<BaseLayout title={title} description={description} image={heroSrc} jsonLd={jsonLd}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroSrc}
+  preloadImage={curtainPreloadHref}
+  preloadImageSrcset={curtainPreloadSrcset}
+  jsonLd={jsonLd}
+>
+  <FarewellCurtain listing={listing} />
   <SiteHeader />
-  <main id="ana-icerik">
+  <main id="ana-icerik" tabindex="-1">
     <Hero listing={listing} />
     <OwnerStory listing={listing} />
     <TravelMap years={listing.ownership.years} />

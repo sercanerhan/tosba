@@ -21,6 +21,10 @@ const optionalDate = z
     message: "Tarih gerçek bir YYYY-AA-GG tarihi veya bilinmiyor olmalıdır.",
   });
 
+const requiredDate = z.string().refine(isCalendarDate, {
+  message: "Tarih gerçek bir YYYY-AA-GG tarihi olmalıdır.",
+});
+
 const optionalInteger = z
   .string()
   .refine((value) => value === "" || value === unknown || /^\d+$/.test(value), {
@@ -38,6 +42,8 @@ const sourceList = z.array(evidenceSourceSchema).min(1);
 export const listingSchema = z.object({
   ad: z.object({
     title: z.string().min(1),
+    status: z.enum(["satilik", "satildi"]),
+    soldAt: optionalDate,
     priceTl: optionalInteger,
     negotiation: z.string(),
     city: z.string(),
@@ -55,6 +61,7 @@ export const listingSchema = z.object({
   }),
   car: z.object({
     make: z.string().min(1),
+    nickname: z.string().min(1),
     model: z.string().min(1),
     generation: z.string(),
     trim: z.string(),
@@ -71,6 +78,7 @@ export const listingSchema = z.object({
   }),
   ownership: z.object({
     firstOwner: z.boolean(),
+    startedAt: requiredDate,
     years: z.coerce.number().int().positive(),
     shortStory: z.string(),
     warningExperience: z.string(),
@@ -139,6 +147,22 @@ export const listingSchema = z.object({
       sources: sourceList,
     }),
   ),
+}).superRefine((listing, context) => {
+  switch (listing.ad.status) {
+    case "satilik":
+      break;
+    case "satildi":
+      if (!listing.ad.soldAt || listing.ad.soldAt === unknown) {
+        context.addIssue({
+          code: "custom",
+          message: "Satılmış araçta satış tarihi zorunludur.",
+          path: ["ad", "soldAt"],
+        });
+      }
+      break;
+    default:
+      listing.ad.status satisfies never;
+  }
 });
 
 export type CarListing = z.infer<typeof listingSchema>;

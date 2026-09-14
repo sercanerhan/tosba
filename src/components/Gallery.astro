@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 import { galleryAssets } from "../data/media";
 
 const filters = [
-  { id: "today", label: "Bugünkü hâli" },
+  { id: "today", label: "Son kayıtlı hâli" },
   { id: "interior", label: "Kabin" },
   { id: "evidence", label: "Hasar / onarım" },
   { id: "archive", label: "Arşiv" },
@@ -21,7 +21,7 @@ const items = await Promise.all(galleryAssets.map(async (asset) => {
   <div class="page-shell">
     <div class="chapter__heading gallery__heading">
       <p class="eyebrow">Görsel kayıt</p>
-      <h2 id="gallery-title">Bugün, kabin, kanıt ve arşiv.</h2>
+      <h2 id="gallery-title">Son görünüm, kabin, kanıt ve geçmiş.</h2>
       <p>Fotoğraflar yeniden işlenmiş web türevleridir. Kişisel veriler gizlenir; arşiv varsayılan olarak kapalıdır.</p>
     </div>
 

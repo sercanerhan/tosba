@@ -15,7 +15,7 @@ const fact = (value: string, fallback = "Bilgi bekleniyor") => value || fallback
     <div class="chapter__heading">
       <p class="eyebrow">Araç pasaportu</p>
       <h2 id="passport-title">Bir bakışta bütün kimliği.</h2>
-      <p>Satın alma kararında sorulan temel bilgiler ve dört lastiğin ayrı kayıtları.</p>
+      <p>14 yıllık ilk sahiplik döneminden kalan temel bilgiler ve dört lastiğin ayrı kayıtları.</p>
     </div>
 
     <div class="passport__grid">
@@ -45,13 +45,13 @@ const fact = (value: string, fallback = "Bilgi bekleniyor") => value || fallback
       </article>
 
       <article class="passport__block passport__block--sale">
-        <p class="passport__label technical">03 · SATIŞ</p>
-        <h3 class:list={{ pending: !listing.ad.priceTl }}>{formatNumber(listing.ad.priceTl, " TL")}<span>{listing.ad.negotiation}</span></h3>
+        <p class="passport__label technical">03 · DEVİR</p>
+        <h3>Yeni sahibinde<span>{formatDate(listing.ad.soldAt)}</span></h3>
         <dl>
-          <div><dt>Konum</dt><dd class:list={{ pending: !listing.ad.city }}>{location}</dd></div>
-          <div><dt>Ekspertiz</dt><dd>{listing.ad.openToInspection ? "Açık" : "Bilgi bekleniyor"}</dd></div>
-          <div><dt>Test sürüşü</dt><dd>{fact(listing.ad.testDrive)}</dd></div>
-          <div><dt>Satış nedeni</dt><dd class:list={{ pending: !listing.ad.saleReason }}>{fact(listing.ad.saleReason)}</dd></div>
+          <div><dt>Durum</dt><dd>Satıldı</dd></div>
+          <div><dt>Devir tarihi</dt><dd>{formatDate(listing.ad.soldAt)}</dd></div>
+          <div><dt>Son kayıtlı konum</dt><dd class:list={{ pending: !listing.ad.city }}>{location}</dd></div>
+          <div><dt>İlk sahiplik</dt><dd>{formatDate(listing.ownership.startedAt)} → {formatDate(listing.ad.soldAt)}</dd></div>
         </dl>
       </article>
 
@@ -63,7 +63,7 @@ const fact = (value: string, fallback = "Bilgi bekleniyor") => value || fallback
             <li><Icon name="ph:check" aria-hidden="true" /><span>{item}</span></li>
           ))}
         </ul>
-        <p class="passport__note">Donanımlar satıcı beyanı ve mevcut fotoğrafla sunulur; teslim/fabrika ayrımı belge sağlandıkça güncellenir.</p>
+        <p class="passport__note">Donanımlar ilk sahibinin kaydı ve mevcut fotoğraflarla sunulur; teslim ve fabrika ayrımı yalnızca belge bulunan kalemlerde kesinleştirilir.</p>
       </article>
 
       <article class="passport__block passport__block--tires" id="lastikler">

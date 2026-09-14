@@ -10,6 +10,7 @@ const { listing } = Astro.props;
 const hero = mediaById["hero-safe"]!;
 const texture = mediaById["atlas-texture"]!;
 const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", ") || "Konum bekleniyor";
+const soldAt = formatDate(listing.ad.soldAt);
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title" data-hero>
@@ -45,7 +46,7 @@ const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", 
     <div class="hero__copy" data-hero-copy>
       <p class="hero__kicker technical">
         <span aria-hidden="true"></span>
-        {listing.car.modelYear} · İlk sahibinden
+        {listing.car.modelYear} · 2026 · İlk sahiplik arşivi
       </p>
       <h1 id="hero-title">14 Yıllık<br />Yörünge</h1>
       <p class="hero__model">
@@ -55,21 +56,21 @@ const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", 
         <span aria-hidden="true">·</span>
         {listing.car.transmission}
       </p>
-      <p class="hero__ownership">İlk sahibi · {listing.ownership.years} yıllık yol arkadaşı</p>
+      <p class="hero__ownership">{listing.car.nickname} · İlk sahibiyle {listing.ownership.years} yıllık yol arkadaşlığı</p>
 
       <div class="hero__actions">
-        <a class="action action--primary" href="#arac-atlasi">
-          Aracı keşfet
+        <a class="action action--primary" href="#hikaye">
+          Hikâyeyi oku
           <Icon name="ph:arrow-right" aria-hidden="true" />
         </a>
         <a class="action action--quiet" href="#seffaflik">
-          Şeffaflık kaydı
+          Şeffaflık arşivi
           <Icon name="ph:file-text" aria-hidden="true" />
         </a>
       </div>
     </div>
 
-    <dl class="hero__facts" aria-label="Hızlı satış bilgileri" data-hero-facts>
+    <dl class="hero__facts" aria-label="Hızlı arşiv bilgileri" data-hero-facts>
       <div>
         <dt>Kilometre</dt>
         <dd class:list={{ pending: !listing.car.mileage }}>
@@ -77,20 +78,18 @@ const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", 
         </dd>
       </div>
       <div>
-        <dt>Fiyat</dt>
-        <dd class:list={{ pending: !listing.ad.priceTl }}>
-          {formatNumber(listing.ad.priceTl, " TL")}
-        </dd>
+        <dt>Durum</dt>
+        <dd>Satıldı · {soldAt}</dd>
       </div>
       <div>
-        <dt>Konum</dt>
+        <dt>Son konum</dt>
         <dd class:list={{ pending: !listing.ad.city }}>{location}</dd>
       </div>
     </dl>
 
     <div class="hero__date technical" data-hero-date>
-      <span>{formatDate(listing.ad.currentPhotoDate)}</span>
-      <small><Icon name="ph:circle" aria-hidden="true" /> Güncel görünüm</small>
+      <span>{soldAt}</span>
+      <small><Icon name="ph:circle" aria-hidden="true" /> Arşiv kaydı</small>
     </div>
 
     <a class="hero__scroll" href="#hikaye">
@@ -267,6 +266,9 @@ const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", 
     display: grid;
     gap: var(--space-1);
     justify-items: end;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-default);
+    background: var(--overlay-scrim);
     color: var(--text-secondary);
     font-size: var(--type-caption);
   }
@@ -369,10 +371,8 @@ const location = [listing.ad.district, listing.ad.city].filter(Boolean).join(", 
     }
 
     .hero__facts dd {
-      overflow: hidden;
       font-size: var(--type-caption);
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      line-height: 1.35;
     }
 
   }

@@ -42,8 +42,8 @@ export const mediaAssets: MediaAsset[] = [
     src: heroSafe,
     category: "today",
     alt: "Siyah 2012 Volkswagen Golf'un gün batımında sağ yan görünümü",
-    caption: "Bugünkü hâli · plaka gizlenmiştir",
-    source: "Satıcı fotoğrafı",
+    caption: "Son kayıtlı hâli · plaka gizlenmiştir",
+    source: "İlk sahibi fotoğrafı",
     gallery: true,
   },
   {
@@ -52,16 +52,16 @@ export const mediaAssets: MediaAsset[] = [
     category: "today",
     alt: "Siyah Golf'un açık havada sol yan profili",
     caption: "Yan profil",
-    source: "Satıcı fotoğrafı",
+    source: "İlk sahibi fotoğrafı",
     gallery: true,
   },
   {
     id: "atlas-exterior",
     src: atlasExterior,
     category: "today",
-    alt: "Siyah Golf'un ekspertiz alanında ön üç çeyrek görünümü",
+    alt: "Siyah Golf'un kapalı alanda ön üç çeyrek görünümü",
     caption: "Dış görünüş atlası",
-    source: "Satıcı fotoğrafı",
+    source: "İlk sahibi fotoğrafı",
   },
   {
     id: "atlas-tires",
@@ -69,7 +69,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "today",
     alt: "Golf'un sol arka bölümü, jantı ve lastiği",
     caption: "Jant ve lastik görünümü",
-    source: "Satıcı fotoğrafı",
+    source: "İlk sahibi fotoğrafı",
     gallery: true,
   },
   {
@@ -78,7 +78,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "interior",
     alt: "Golf'un çok fonksiyonlu deri direksiyonu, gösterge paneli, CD ünitesi ve manuel vitesi",
     caption: "Kokpit ve fabrika çıkışlı ek donanımlar",
-    source: "Satıcı fotoğrafı",
+    source: "İlk sahibi fotoğrafı",
     gallery: true,
   },
   {
@@ -113,15 +113,15 @@ export const mediaAssets: MediaAsset[] = [
     category: "repair",
     alt: "Onarım sonrasında Golf'un önden görünümü",
     caption: "Onarım sonrası görünüm",
-    source: "Satıcı fotoğrafı",
+    source: "İlk sahibi fotoğrafı",
   },
   {
     id: "rear-area-mark",
     src: rearAreaMark,
     category: "damage",
     alt: "Golf'un sol arka teker ve çamurluk çevresindeki yüzey izi",
-    caption: "Güncel durumu yeniden fotoğraflanacak bölge",
-    source: "Satıcı fotoğrafı",
+    caption: "İlk sahiplik dönemindeki son yüzey kaydı",
+    source: "İlk sahibi fotoğrafı",
     gallery: true,
   },
   {
@@ -130,7 +130,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "archive",
     alt: "Golf'un geçmiş yıllardaki ön üç çeyrek görünümü",
     caption: "Geçmişten dış görünüş",
-    source: "Satıcı arşivi",
+    source: "İlk sahibi arşivi",
     gallery: true,
   },
   {
@@ -139,7 +139,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "archive",
     alt: "Golf'un ön jant ve yan gövde arşiv detayı",
     caption: "Ön jant ve yan gövde",
-    source: "Satıcı arşivi",
+    source: "İlk sahibi arşivi",
     gallery: true,
   },
   {
@@ -148,7 +148,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "archive",
     alt: "Golf'un arka çamurluk, stop ve jant arşiv detayı",
     caption: "Arka çeyrek görünümü",
-    source: "Satıcı arşivi",
+    source: "İlk sahibi arşivi",
     gallery: true,
   },
   {
@@ -157,7 +157,7 @@ export const mediaAssets: MediaAsset[] = [
     category: "archive",
     alt: "Golf'un arka kapı ve teker arşiv detayı",
     caption: "Arka kapı ve teker",
-    source: "Satıcı arşivi",
+    source: "İlk sahibi arşivi",
     gallery: true,
   },
   {

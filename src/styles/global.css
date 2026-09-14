@@ -17,6 +17,12 @@
   --overlay-scrim: rgba(2, 7, 13, 0.74);
   --overlay-soft: rgba(2, 7, 13, 0.36);
   --overlay-header: rgba(2, 7, 13, 0.28);
+  --memorial-surface: #050505;
+  --memorial-text: #f1eee8;
+  --memorial-muted: #aaa49a;
+  --memorial-border: #47433d;
+  --memorial-veil: rgba(0, 0, 0, 0.72);
+  --memorial-backdrop: rgba(0, 0, 0, 0.96);
 
   --font-primary: "Geist Variable", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   --font-technical: "JetBrains Mono Variable", SFMono-Regular, Consolas, monospace;
@@ -83,6 +89,11 @@ body {
 body[data-menu-open="true"],
 body:has(dialog[open]) {
   overflow: hidden;
+}
+
+body:has(.farewell[open]) > .site-header,
+body:has(.farewell[open]) > main {
+  visibility: hidden;
 }
 
 ::selection {
@@ -386,7 +397,7 @@ dialog::backdrop {
   .timeline,
   .transparency,
   .gallery,
-  .contact-footer {
+  .archive-footer {
     display: none !important;
   }
 
